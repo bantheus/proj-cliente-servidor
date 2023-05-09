@@ -1,9 +1,27 @@
 import Usuario from "../models/User.js";
 import mongoose from "mongoose";
+import jwt from "jsonwebtoken";
+import * as dotenv from "dotenv";
+
+dotenv.config();
+
+const createToken = (_id) => {
+  return jwt.sign({ _id }, process.env.SECRET, { expiresIn: "3d" });
+};
 
 // Login
 export const loginUser = async (req, res) => {
-  res.json({ msg: "Login User" });
+  const { email, senha } = req.body;
+
+  try {
+    const user = await Usuario.login(email, senha);
+
+    const token = createToken(user._id);
+
+    res.status(200).json({ email, token });
+  } catch (erro) {
+    res.status(400).json({ error: erro.message });
+  }
 };
 
 // Signup
@@ -13,7 +31,9 @@ export const signupUser = async (req, res) => {
   try {
     const user = await Usuario.signup(nome, email, senha);
 
-    res.status(200).json({ email, user });
+    const token = createToken(user._id);
+
+    res.status(200).json({ email, token });
   } catch (erro) {
     res.status(400).json({ error: erro.message });
   }

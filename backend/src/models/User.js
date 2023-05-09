@@ -52,4 +52,24 @@ userSchema.statics.signup = async function (nome, email, senha) {
   return user;
 };
 
+userSchema.statics.login = async function (email, senha) {
+  if (!email || !senha) {
+    throw Error("Todos os campos devem ser preenchidos!");
+  }
+
+  const user = await this.findOne({ email });
+
+  if (!user) {
+    throw Error("Usuário não encontrado!");
+  }
+
+  const match = await bcrypt.compare(senha, user.senha);
+
+  if (!match) {
+    throw Error("Senha incorreta!");
+  }
+
+  return user;
+};
+
 export default mongoose.model("Usuario", userSchema);

@@ -1,5 +1,6 @@
 import mongoose, { Schema } from "mongoose";
 import bcrypt from "bcrypt";
+import validator from "validator";
 
 const userSchema = new Schema({
   nome: {
@@ -24,6 +25,19 @@ const userSchema = new Schema({
 });
 
 userSchema.statics.signup = async function (nome, email, senha) {
+  // Validação
+  if (!nome || !email || !senha) {
+    throw Error("Todos os campos devem ser preenchidos!");
+  }
+
+  if (!validator.isEmail(email)) {
+    throw Error("Email inválido!");
+  }
+
+  if (senha.length < 2) {
+    throw Error("A senha não é forte o suficiente!");
+  }
+
   const exists = await this.findOne({ email });
 
   if (exists) {

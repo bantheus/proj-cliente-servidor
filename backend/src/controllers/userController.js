@@ -15,39 +15,9 @@ export const signupUser = async (req, res) => {
 
     res.status(200).json({ email, user });
   } catch (erro) {
-    res.status(400).json({ error: erro });
+    res.status(400).json({ error: erro.message });
   }
 };
-// export const signupUser = async (req, res) => {
-//   const { nome, email, senha } = req.body;
-
-//   let camposVazios = [];
-
-//   if (!nome) {
-//     camposVazios.push("nome");
-//   }
-
-//   if (!email) {
-//     camposVazios.push("email");
-//   }
-
-//   if (!senha) {
-//     camposVazios.push("senha");
-//   }
-
-//   if (camposVazios.length > 0) {
-//     return res.status(400).json({ msg: "Campos obrigatórios não preenchidos" });
-//   }
-
-//   try {
-//     await Usuario.create({ nome, email, senha });
-//     res.status(201).json({ descricao: "Cadastro realizado com sucesso" });
-//   } catch (erro) {
-//     res
-//       .status(500)
-//       .json({ erro: "Erro ao tentar cadastrar o usuário no servidor" });
-//   }
-// };
 
 // Get All
 export const getUsers = async (req, res) => {

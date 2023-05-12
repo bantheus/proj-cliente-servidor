@@ -19,8 +19,8 @@ export default function Signup() {
 
   return (
     <div className="bg-gray-800 min-h-screen flex flex-col">
-      <div className="container mx-auto flex-1 flex flex-row justify-center px-4 py-8 sm:px-6 lg:px-8">
-        <div className="max-w-md w-[50%] rounded-l-md max-h-[90vh] shadow-lg overflow-hidden hidden md:block">
+      <div className="card">
+        <div className="card-img">
           <div className="flex items-center justify-center h-full">
             <Image
               src="/road2.jpg"
@@ -70,11 +70,7 @@ export default function Signup() {
               <Button tipo="submit" texto="Cadastrar" />
             </form>
             <div className="flex mt-6">
-              <Link
-                href="/"
-                className="group mx-auto bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-700 hover:to-cyan-600 text-white font-bold py-2 px-4 rounded-md transition duration-300 ripple transform text-center md:w-[50%]"
-                type="submit"
-              >
+              <Link href="/" className="group ripple btn" type="submit">
                 <FontAwesomeIcon
                   icon={faArrowLeft}
                   className="mr-2 group-hover:-translate-x-1 transition duration-300"

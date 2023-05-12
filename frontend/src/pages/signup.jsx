@@ -1,5 +1,10 @@
 import Link from "next/link";
 import { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import Image from "next/image";
+import Input from "@/components/form/input";
+import Button from "@/components/form/button";
 
 export default function Signup() {
   const [nome, setNome] = useState("");
@@ -13,75 +18,73 @@ export default function Signup() {
   };
 
   return (
-    <>
-      <form action="" className="max-w-md mx-auto mt-8" onSubmit={handleSubmit}>
-        <h3 className="text-2xl font-bold mb-4">Sign up</h3>
-
-        <div className="mb-4">
-          <label className="block text-gray-700 font-bold mb-2" htmlFor="nome">
-            Nome:
-          </label>
-          <input
-            className="border border-gray-400 p-2 w-full"
-            id="nome"
-            type="text"
-            onChange={(e) => setNome(e.target.value)}
-            value={nome}
-          />
+    <div className="bg-gray-800 min-h-screen flex flex-col">
+      <div className="container mx-auto flex-1 flex flex-row justify-center px-4 py-12 sm:px-6 lg:px-8">
+        <div className="max-w-md w-[50%] rounded-l-md max-h-[85vh] shadow-lg overflow-hidden">
+          <div className="flex items-center justify-center h-full">
+            <Image
+              src="/road2.jpg"
+              alt="rua"
+              width={600}
+              height={400}
+              quality={100}
+              className="object-cover"
+            />
+          </div>
         </div>
 
-        <div className="mb-4">
-          <label className="block text-gray-700 font-bold mb-2" htmlFor="email">
-            Email:
-          </label>
-          <input
-            className="border border-gray-400 p-2 w-full"
-            id="email"
-            type="email"
-            onChange={(e) => setEmail(e.target.value)}
-            value={email}
-          />
-        </div>
+        <div className="max-w-md w-[50%]  max-h-[85vh]">
+          <div className="bg-gray-700 shadow-lg rounded-e-md p-8 h-full">
+            <h3 className="text-2xl font-bold mb-4 text-center text-white">
+              Sign up
+            </h3>
 
-        <div className="mb-4">
-          <label className="block text-gray-700 font-bold mb-2" htmlFor="senha">
-            Senha:
-          </label>
-          <input
-            className="border border-gray-400 p-2 w-full"
-            id="senha"
-            type="password"
-            onChange={(e) => setSenha(e.target.value)}
-            value={senha}
-          />
-        </div>
+            <form className="space-y-6" onSubmit={handleSubmit}>
+              <Input
+                tipo="text"
+                texto="Nome"
+                placeholder="Digite seu nome"
+                name="nome"
+                value={nome}
+                onChange={(e) => setNome(e.target.value)}
+              />
 
-        <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-          type="submit"
-        >
-          Sign up
-        </button>
-      </form>
-      <div className="fixed left-0 bottom-0 mb-8 ml-8">
-        <Link
-          href="/"
-          className="flex items-center text-gray-500 hover:text-gray-700 transition-all duration-300 ease-in-out"
-        >
-          <svg
-            className="h-6 w-6 mr-2 transform rotate-180"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M15 18l-6-6 6-6" />
-          </svg>
-          Voltar
-        </Link>
+              <Input
+                tipo="email"
+                texto="Email"
+                placeholder="Digite seu email"
+                name="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+
+              <Input
+                tipo="password"
+                texto="Senha"
+                placeholder="Digite sua senha"
+                name="senha"
+                value={senha}
+                onChange={(e) => setSenha(e.target.value)}
+              />
+
+              <Button tipo="submit" texto="Cadastrar" />
+            </form>
+            <div className="flex mt-6">
+              <Link
+                href="/"
+                className="group mx-auto bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-700 hover:to-cyan-600 text-white font-bold py-2 px-4 rounded-md transition duration-300 ripple transform text-center w-[30%]"
+                type="submit"
+              >
+                <FontAwesomeIcon
+                  icon={faArrowLeft}
+                  className="mr-2 group-hover:-translate-x-1 transition duration-300"
+                />
+                Voltar
+              </Link>
+            </div>
+          </div>
+        </div>
       </div>
-    </>
+    </div>
   );
 }

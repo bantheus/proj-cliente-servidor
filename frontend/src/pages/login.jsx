@@ -33,7 +33,7 @@ export default function Login() {
         </div>
 
         <div className="max-w-md md:w-[50%] w-full max-h-[90vh]">
-          <div className="bg-gray-700 shadow-lg rounded-e-md md:rounded-s-none  rounded-s-md p-8 h-full">
+          <div className="card-input">
             <h3 className="md:text-4xl text-3xl font-bold mb-4 text-center text-white">
               <span className="text-cyan-500 ">Report</span>Trânsito
             </h3>

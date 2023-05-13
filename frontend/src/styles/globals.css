@@ -13,4 +13,8 @@
   @apply max-w-md w-[50%] rounded-l-md max-h-[90vh] shadow-lg overflow-hidden hidden md:block;
 }
 
+.card-input {
+  @apply bg-gray-700 shadow-lg rounded-e-md md:rounded-s-none rounded-s-md p-8 h-full;
+}
+
 @tailwind utilities;

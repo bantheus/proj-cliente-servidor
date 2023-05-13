@@ -5,16 +5,18 @@ import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
 import Input from "@/components/form/input";
 import Button from "@/components/form/button";
+import { useSignup } from "@/hooks/useSignup";
 
 export default function Signup() {
   const [nome, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const { signup, error, isLoading } = useSignup();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(nome, email, senha);
+    await signup(nome, email, senha);
   };
 
   return (
@@ -28,14 +30,15 @@ export default function Signup() {
               width={600}
               height={400}
               quality={100}
-              className="object-cover"
+              priority
+              className="object-cover object-center"
             />
           </div>
         </div>
 
-        <div className="max-w-md md:w-[50%] w-full max-h-[90vh]">
+        <div className="max-w-md md:w-[50%] w-full md:max-h-[90vh] max-h-[100vh]">
           <div className="card-input">
-            <h3 className="text-3xl font-bold mb-4 text-center text-white">
+            <h3 className="text-3xl font-bold mb-4 md:mb-1 lg:mb-4 text-center text-white">
               Sign up
             </h3>
 
@@ -67,9 +70,19 @@ export default function Signup() {
                 onChange={(e) => setSenha(e.target.value)}
               />
 
-              <Button tipo="submit" texto="Cadastrar" />
+              <Button tipo="submit" texto="Cadastrar" disabled={isLoading} />
+              {error && (
+                <div
+                  className=" bg-red-100 border border-red-400 text-red-700 px-2 py-1 lg:py-3 rounded relative"
+                  role="alert"
+                >
+                  <span className="block sm:inline text-sm lg:text-base">
+                    {error}
+                  </span>
+                </div>
+              )}
             </form>
-            <div className="flex mt-6">
+            <div className="flex mt-6 md:mt-3 lg:mt-6">
               <Link href="/" className="group ripple btn" type="submit">
                 <FontAwesomeIcon
                   icon={faArrowLeft}

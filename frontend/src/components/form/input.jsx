@@ -7,8 +7,11 @@ export default function Input({
   value,
 }) {
   return (
-    <div className="mb-4">
-      <label className="block text-gray-400 font-bold mb-2" htmlFor={name}>
+    <div className="mb-4 md:mb-1 lg:mb-4">
+      <label
+        className="block text-gray-400 font-bold mb-2 md:mb-1 lg:mb-2"
+        htmlFor={name}
+      >
         {texto}:
       </label>
       <input

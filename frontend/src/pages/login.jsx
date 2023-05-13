@@ -64,7 +64,7 @@ export default function Login() {
                 Criar Conta
                 <FontAwesomeIcon
                   icon={faArrowRight}
-                  className="ml-2 group-hover:-translate-x-1 transition duration-300"
+                  className="ml-2 group-hover:translate-x-1 transition duration-300"
                 />
               </Link>
             </div>

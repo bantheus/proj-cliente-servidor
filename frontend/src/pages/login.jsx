@@ -5,15 +5,18 @@ import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
 import Image from "next/image";
 import Input from "@/components/form/input";
 import Button from "@/components/form/button";
+import { useLogin } from "@/hooks/useLogin";
+import Error from "@/components/error";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
+  const { login, error, isLoading } = useLogin();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(nome, email, senha);
+    await login(email, senha);
   };
 
   return (
@@ -27,6 +30,7 @@ export default function Login() {
               width={600}
               height={400}
               quality={100}
+              priority
               className="object-cover"
             />
           </div>
@@ -57,14 +61,19 @@ export default function Login() {
                 onChange={(e) => setSenha(e.target.value)}
               />
 
-              <Button tipo="submit" texto="Login" />
+              <Button tipo="submit" texto="Login" disabled={isLoading} />
+              {error && <Error erroMensagem={error} />}
             </form>
             <div className="flex mt-6">
-              <Link href="/signup" className="group ripple btn" type="submit">
+              <Link
+                href="/signup"
+                className="group ripple btn w-1/2 text-base"
+                type="submit"
+              >
                 Criar Conta
                 <FontAwesomeIcon
                   icon={faArrowRight}
-                  className="ml-2 group-hover:translate-x-1 transition duration-300"
+                  className="ml-2 group-hover:translate-x-1 transition duration-300 "
                 />
               </Link>
             </div>

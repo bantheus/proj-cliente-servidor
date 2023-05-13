@@ -6,6 +6,7 @@ import Image from "next/image";
 import Input from "@/components/form/input";
 import Button from "@/components/form/button";
 import { useSignup } from "@/hooks/useSignup";
+import Error from "@/components/error";
 
 export default function Signup() {
   const [nome, setNome] = useState("");
@@ -71,16 +72,7 @@ export default function Signup() {
               />
 
               <Button tipo="submit" texto="Cadastrar" disabled={isLoading} />
-              {error && (
-                <div
-                  className=" bg-red-100 border border-red-400 text-red-700 px-2 py-1 lg:py-3 rounded relative"
-                  role="alert"
-                >
-                  <span className="block sm:inline text-sm lg:text-base">
-                    {error}
-                  </span>
-                </div>
-              )}
+              {error && <Error erroMensagem={error} />}
             </form>
             <div className="flex mt-6 md:mt-3 lg:mt-6">
               <Link href="/" className="group ripple btn" type="submit">

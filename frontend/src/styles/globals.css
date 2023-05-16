@@ -2,19 +2,19 @@
 @tailwind components;
 
 .btn {
-  @apply mx-auto bg-gradient-to-r from-cyan-600 to-cyan-700 hover:from-cyan-700 hover:to-cyan-600 text-white font-bold py-2 px-4 rounded-md transition duration-300 transform text-center md:w-[50%];
+  @apply mx-auto transform rounded-md bg-gradient-to-r from-cyan-600 to-cyan-700 px-4 py-2 text-center font-bold text-white transition duration-300 hover:from-cyan-700 hover:to-cyan-600 md:w-[50%];
 }
 
 .card {
-  @apply container mx-auto flex-1 flex flex-row justify-center px-4 py-8 sm:px-6 lg:px-8;
+  @apply container mx-auto flex flex-1 flex-row justify-center px-4 py-8 sm:px-6 lg:px-8;
 }
 
 .card-img {
-  @apply max-w-md w-[50%] rounded-l-md max-h-[90vh] shadow-lg overflow-hidden hidden md:block;
+  @apply hidden max-h-[90vh] w-[50%] max-w-md overflow-hidden rounded-l-md shadow-lg md:block xl:max-h-[70vh];
 }
 
 .card-input {
-  @apply bg-gray-700 shadow-lg rounded-e-md md:rounded-s-none rounded-s-md p-8 h-full;
+  @apply h-full rounded-e-md rounded-s-md bg-gray-700 p-8 shadow-lg md:rounded-s-none;
 }
 
 @tailwind utilities;

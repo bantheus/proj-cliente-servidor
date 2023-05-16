@@ -21,10 +21,10 @@ export default function Signup() {
   };
 
   return (
-    <div className="bg-gray-800 min-h-screen flex flex-col">
+    <div className="flex min-h-screen flex-col bg-gray-800">
       <div className="card">
         <div className="card-img">
-          <div className="flex items-center justify-center h-full">
+          <div className="flex h-full items-center justify-center">
             <Image
               src="/road2.jpg"
               alt="rua"
@@ -37,9 +37,9 @@ export default function Signup() {
           </div>
         </div>
 
-        <div className="max-w-md md:w-[50%] w-full md:max-h-[90vh] max-h-[100vh]">
+        <div className="max-h-[100vh] w-full max-w-md md:max-h-[90vh] md:w-[50%] xl:max-h-[70vh]">
           <div className="card-input">
-            <h3 className="text-3xl font-bold mb-4 md:mb-1 lg:mb-4 text-center text-white">
+            <h3 className="mb-4 text-center text-3xl font-bold text-white md:mb-1 lg:mb-4">
               Sign up
             </h3>
 
@@ -74,11 +74,11 @@ export default function Signup() {
               <Button tipo="submit" texto="Cadastrar" disabled={isLoading} />
               {error && <Error erroMensagem={error} />}
             </form>
-            <div className="flex mt-6 md:mt-3 lg:mt-6">
-              <Link href="/" className="group ripple btn" type="submit">
+            <div className="mt-6 flex md:mt-3 lg:mt-6">
+              <Link href="/" className="ripple btn group" type="submit">
                 <FontAwesomeIcon
                   icon={faArrowLeft}
-                  className="mr-2 group-hover:-translate-x-1 transition duration-300"
+                  className="mr-2 transition duration-300 group-hover:-translate-x-1"
                 />
                 Voltar
               </Link>

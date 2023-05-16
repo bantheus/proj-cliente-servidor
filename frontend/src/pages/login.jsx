@@ -20,10 +20,10 @@ export default function Login() {
   };
 
   return (
-    <div className="bg-gray-800 min-h-screen flex flex-col">
-      <div className="card">
+    <div className="flex min-h-screen flex-col bg-gray-800">
+      <div className="card alig">
         <div className="card-img">
-          <div className="flex items-center justify-center h-full">
+          <div className="flex  h-full justify-center">
             <Image
               src="/road2.jpg"
               alt="rua"
@@ -36,9 +36,9 @@ export default function Login() {
           </div>
         </div>
 
-        <div className="max-w-md md:w-[50%] w-full max-h-[90vh]">
+        <div className="max-h-[90vh] w-full max-w-md md:w-[50%] xl:max-h-[70vh]">
           <div className="card-input">
-            <h3 className="md:text-4xl text-3xl font-bold mb-4 text-center text-white">
+            <h3 className="mb-4 text-center text-3xl font-bold text-white md:text-4xl">
               <span className="text-cyan-500 ">ReporT</span>rânsito
             </h3>
 
@@ -64,16 +64,16 @@ export default function Login() {
               <Button tipo="submit" texto="Login" disabled={isLoading} />
               {error && <Error erroMensagem={error} />}
             </form>
-            <div className="flex mt-6">
+            <div className="mt-6 flex">
               <Link
                 href="/signup"
-                className="group ripple btn w-1/2 text-base"
+                className="ripple btn group w-1/2 text-base"
                 type="submit"
               >
                 Criar Conta
                 <FontAwesomeIcon
                   icon={faArrowRight}
-                  className="ml-2 group-hover:translate-x-1 transition duration-300 "
+                  className="ml-2 transition duration-300 group-hover:translate-x-1 "
                 />
               </Link>
             </div>

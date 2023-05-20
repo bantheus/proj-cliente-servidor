@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { useState } from "react";
 import { useLogout } from "@/hooks/useLogout";
+import { useAuthContext } from "@/hooks/useAuthContext";
 
 export default function HomePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { logout } = useLogout();
+  const { user } = useAuthContext();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -23,13 +25,20 @@ export default function HomePage() {
               <div className="flex flex-shrink-0 items-center">
                 <Link
                   href="/home"
-                  className=" text-2xl font-bold text-white"
+                  className="text-2xl font-bold text-white"
                   onClick={handleClick}
                 >
-                  <span className="text-cyan-500 ">ReporT</span>rânsito
+                  <span className="text-cyan-500">ReporT</span>rânsito
                 </Link>
               </div>
             </div>
+
+            {user && (
+              <p className="hidden text-sm font-medium text-gray-300 md:block">
+                Bem-vindo <span className="text-cyan-500">{user.email}</span>
+              </p>
+            )}
+
             <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:hidden">
               <button
                 type="button"
@@ -71,35 +80,68 @@ export default function HomePage() {
                 </svg>
               </button>
             </div>
+
             <div
-              className={`${isMenuOpen ? "block" : "hidden"} sm:ml-6 sm:block`}
+              className={`space-x-4 sm:flex ${
+                isMenuOpen ? "hidden" : "block"
+              } hidden sm:block`}
             >
-              <div className="flex space-x-4">
-                {!isMenuOpen && (
+              {user ? (
+                <Link
+                  href="/"
+                  className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+                >
+                  Logout
+                </Link>
+              ) : (
+                <>
                   <Link
-                    href="/"
+                    href="/login"
                     className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
                   >
-                    Logout
+                    Login
                   </Link>
-                )}
-              </div>
+                  <Link
+                    href="/signup"
+                    className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+                  >
+                    Cadastro
+                  </Link>
+                </>
+              )}
             </div>
           </div>
         </div>
 
         <div
-          className={`sm:hidden ${isMenuOpen ? "block" : "hidden"}`}
+          className={`${isMenuOpen ? "block" : "hidden"} sm:hidden`}
           id="mobile-menu"
         >
-          <div className="space-y-1 px-2 pb-3 pt-2">
-            <Link
-              href="/"
-              className="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
-              onClick={handleClick}
-            >
-              Logout
-            </Link>
+          <div className="flex flex-col items-center space-y-1 px-2 pb-3 pt-2">
+            {user ? (
+              <Link
+                href="/"
+                className="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+                onClick={handleClick}
+              >
+                Logout
+              </Link>
+            ) : (
+              <>
+                <Link
+                  href="/login"
+                  className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+                >
+                  Login
+                </Link>
+                <Link
+                  href="/signup"
+                  className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+                >
+                  Cadastro
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </nav>

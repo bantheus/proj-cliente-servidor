@@ -1,11 +1,13 @@
 import { useState } from "react";
 import { useAuthContext } from "./useAuthContext";
 import md5 from "md5";
+import { useRouter } from "next/router";
 
 export const useLogin = () => {
   const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(null);
   const { dispatch } = useAuthContext();
+  const router = useRouter();
 
   const login = async (email, password) => {
     setIsLoading(true);
@@ -30,6 +32,7 @@ export const useLogin = () => {
 
       dispatch({ type: "LOGIN", payload: json });
       setIsLoading(false);
+      router.push("home");
     }
   };
 

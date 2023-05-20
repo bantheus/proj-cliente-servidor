@@ -1,9 +1,7 @@
 import mongoose, { Schema } from "mongoose";
-import bcrypt from "bcrypt";
-import validator from "validator";
 
 const userSchema = new Schema({
-  nome: {
+  name: {
     type: String,
     required: true,
     minlength: 2,
@@ -16,60 +14,12 @@ const userSchema = new Schema({
     minlength: 10,
     maxlength: 125,
   },
-  senha: {
+  password: {
     type: String,
     required: true,
     minlength: 2,
     maxlength: 125,
   },
 });
-
-userSchema.statics.signup = async function (nome, email, senha) {
-  // Validação
-  if (!nome || !email || !senha) {
-    throw Error("Todos os campos devem ser preenchidos!");
-  }
-
-  if (!validator.isEmail(email)) {
-    throw Error("Email inválido!");
-  }
-
-  if (senha.length < 2) {
-    throw Error("A senha não é forte o suficiente!");
-  }
-
-  const exists = await this.findOne({ email });
-
-  if (exists) {
-    throw Error("Este email já está sendo utilizado!");
-  }
-
-  const salt = await bcrypt.genSalt(10);
-  const hash = await bcrypt.hash(senha, salt);
-
-  const user = await this.create({ nome, email, senha: hash });
-
-  return user;
-};
-
-userSchema.statics.login = async function (email, senha) {
-  if (!email || !senha) {
-    throw Error("Todos os campos devem ser preenchidos!");
-  }
-
-  const user = await this.findOne({ email });
-
-  if (!user) {
-    throw Error("Usuário não encontrado!");
-  }
-
-  const match = await bcrypt.compare(senha, user.senha);
-
-  if (!match) {
-    throw Error("Senha incorreta!");
-  }
-
-  return user;
-};
 
 export default mongoose.model("Usuario", userSchema);

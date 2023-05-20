@@ -10,7 +10,7 @@ export const useLogin = () => {
     setIsLoading(true);
     setErro(null);
 
-    const response = await fetch("http://localhost:20000/users/login", {
+    const response = await fetch("http://10.20.8.112:20000/users/login", {
       method: "post",
       body: JSON.stringify({ email, senha }),
       headers: { "Content-Type": "application/json" },

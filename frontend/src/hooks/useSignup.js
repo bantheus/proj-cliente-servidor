@@ -8,13 +8,13 @@ export const useSignup = () => {
   const { dispatch } = useAuthContext();
   const router = useRouter();
 
-  const signup = async (nome, email, senha) => {
+  const signup = async (name, email, password) => {
     setIsLoading(true);
     setErro(null);
 
-    const response = await fetch("http://localhost:20000/users/", {
-      method: "post",
-      body: JSON.stringify({ nome, email, senha }),
+    const response = await fetch("http://10.20.8.112:20000/users/", {
+      method: "POST",
+      body: JSON.stringify({ name, email, password }),
       headers: { "Content-Type": "application/json" },
     });
     const json = await response.json();

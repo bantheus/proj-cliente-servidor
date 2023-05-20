@@ -22,8 +22,8 @@ export default function Login() {
   return (
     <div className="flex min-h-screen flex-col bg-gray-800">
       <div className="card alig">
-        <div className="card-img">
-          <div className="flex  h-full justify-center">
+        <div className="card-img md:max-h-[90vh]">
+          <div className="flex h-full items-center justify-center">
             <Image
               src="/road2.jpg"
               alt="rua"
@@ -36,7 +36,7 @@ export default function Login() {
           </div>
         </div>
 
-        <div className="max-h-[90vh] w-full max-w-md md:w-[50%] xl:max-h-[70vh]">
+        <div className="max-h-[90vh] w-full max-w-md md:max-h-[90vh] 2xl:max-h-[70vh]">
           <div className="card-input">
             <h3 className="mb-4 text-center text-3xl font-bold text-white md:text-4xl">
               <span className="text-cyan-500 ">ReporT</span>rânsito
@@ -67,13 +67,14 @@ export default function Login() {
             <div className="mt-6 flex">
               <Link
                 href="/signup"
-                className="ripple btn group w-1/2 text-base"
+                className="ripple btn group flex w-1/2 items-center justify-center text-base"
                 type="submit"
               >
                 Criar Conta
                 <FontAwesomeIcon
                   icon={faArrowRight}
                   className="ml-2 transition duration-300 group-hover:translate-x-1 "
+                  width="16"
                 />
               </Link>
             </div>

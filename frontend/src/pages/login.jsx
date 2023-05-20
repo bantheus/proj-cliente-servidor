@@ -10,13 +10,13 @@ import Error from "@/components/error";
 
 export default function Login() {
   const [email, setEmail] = useState("");
-  const [senha, setSenha] = useState("");
-  const { login, error, isLoading } = useLogin();
+  const [password, setSenha] = useState("");
+  const { login, message, isLoading } = useLogin();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    await login(email, senha);
+    await login(email, password);
   };
 
   return (
@@ -57,12 +57,12 @@ export default function Login() {
                 texto="Senha"
                 placeholder="Digite sua senha"
                 name="senha"
-                value={senha}
+                value={password}
                 onChange={(e) => setSenha(e.target.value)}
               />
 
               <Button tipo="submit" texto="Login" disabled={isLoading} />
-              {error && <Error erroMensagem={error} />}
+              {message && <Error erroMensagem={message} />}
             </form>
             <div className="mt-6 flex">
               <Link

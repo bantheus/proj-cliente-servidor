@@ -1,25 +1,28 @@
 import { useState } from "react";
 import { useAuthContext } from "./useAuthContext";
+import md5 from "md5";
 
 export const useLogin = () => {
-  const [error, setErro] = useState(null);
+  const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(null);
   const { dispatch } = useAuthContext();
 
-  const login = async (email, senha) => {
+  const login = async (email, password) => {
     setIsLoading(true);
-    setErro(null);
+    setMessage(null);
 
-    const response = await fetch("http://10.20.8.112:20000/users/login", {
+    const hashPassword = md5(password);
+
+    const response = await fetch("http://localhost:20000/users/login", {
       method: "post",
-      body: JSON.stringify({ email, senha }),
+      body: JSON.stringify({ email, password: hashPassword }),
       headers: { "Content-Type": "application/json" },
     });
     const json = await response.json();
 
     if (!response.ok) {
       setIsLoading(false);
-      setErro(json.error);
+      setMessage(json.message);
     }
 
     if (response.ok) {
@@ -30,5 +33,5 @@ export const useLogin = () => {
     }
   };
 
-  return { login, isLoading, error };
+  return { login, isLoading, message };
 };

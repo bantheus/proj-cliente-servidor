@@ -12,7 +12,7 @@ export default function Signup() {
   const [name, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [password, setSenha] = useState("");
-  const { signup, error, isLoading } = useSignup();
+  const { signup, message, isLoading } = useSignup();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -72,7 +72,7 @@ export default function Signup() {
               />
 
               <Button tipo="submit" texto="Cadastrar" disabled={isLoading} />
-              {error && <Error erroMensagem={error} />}
+              {message && <Error erroMensagem={message} />}
             </form>
             <div className="mt-6 flex md:mt-3 lg:mt-6">
               <Link

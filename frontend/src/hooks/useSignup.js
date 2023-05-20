@@ -1,27 +1,30 @@
 import { useState } from "react";
 import { useAuthContext } from "./useAuthContext";
 import { useRouter } from "next/router";
+import md5 from "md5";
 
 export const useSignup = () => {
-  const [error, setErro] = useState(null);
+  const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(null);
   const { dispatch } = useAuthContext();
   const router = useRouter();
 
   const signup = async (name, email, password) => {
     setIsLoading(true);
-    setErro(null);
+    setMessage(null);
 
-    const response = await fetch("http://10.20.8.112:20000/users/", {
-      method: "POST",
-      body: JSON.stringify({ name, email, password }),
+    const hashPassword = md5(password);
+
+    const response = await fetch("http://localhost:20000/users/", {
+      method: "post",
+      body: JSON.stringify({ name, email, password: hashPassword }),
       headers: { "Content-Type": "application/json" },
     });
     const json = await response.json();
 
     if (!response.ok) {
       setIsLoading(false);
-      setErro(json.error);
+      setMessage(json.message);
     }
 
     if (response.ok) {
@@ -33,5 +36,5 @@ export const useSignup = () => {
     }
   };
 
-  return { signup, isLoading, error };
+  return { signup, isLoading, message };
 };

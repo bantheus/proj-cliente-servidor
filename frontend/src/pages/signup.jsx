@@ -23,8 +23,8 @@ export default function Signup() {
   return (
     <div className="flex min-h-screen flex-col bg-gray-800">
       <div className="card">
-        <div className="card-img md:max-h-[90vh]">
-          <div className="flex h-full items-center justify-center">
+        <div className="card-img  md:max-h-[90vh]">
+          <div className="flex  items-center justify-center">
             <Image
               src="/road2.jpg"
               alt="rua"
@@ -32,7 +32,7 @@ export default function Signup() {
               height={400}
               quality={100}
               priority
-              className="object-cover object-center"
+              className="h-[90vh] object-cover object-center"
             />
           </div>
         </div>

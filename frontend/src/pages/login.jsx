@@ -64,6 +64,12 @@ export default function Login() {
               <Button tipo="submit" texto="Login" disabled={isLoading} />
               {message && <Error erroMensagem={message} />}
             </form>
+            <Link
+              href="/home"
+              className="mt-2 block text-right text-white hover:text-cyan-400"
+            >
+              Entrar sem conta
+            </Link>
             <div className="mt-6 flex">
               <Link
                 href="/signup"

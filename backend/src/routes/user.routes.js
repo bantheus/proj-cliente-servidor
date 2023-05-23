@@ -3,6 +3,7 @@ import {
   loginUser,
   signupUser,
   getUsers,
+  logoutUser,
   // getUser,
   // deleteUser,
   // updateUser,
@@ -15,6 +16,9 @@ userRouter.post("/login", loginUser);
 
 // Signup
 userRouter.post("/", signupUser);
+
+// Logout
+userRouter.post("/logout", logoutUser);
 
 // Others routes
 userRouter.get("/", getUsers);

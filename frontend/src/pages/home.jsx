@@ -5,7 +5,7 @@ import { useAuthContext } from "@/hooks/useAuthContext";
 
 export default function HomePage() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { logout } = useLogout();
+  const { logout, isLoading } = useLogout();
   const { user } = useAuthContext();
 
   const toggleMenu = () => {
@@ -13,7 +13,9 @@ export default function HomePage() {
   };
 
   const handleClick = () => {
-    logout();
+    if (!isLoading) {
+      logout();
+    }
   };
 
   return (
@@ -34,7 +36,7 @@ export default function HomePage() {
             </div>
 
             {user && (
-              <p className="mr-2 hidden text-sm font-medium text-gray-300 md:block">
+              <p className="hidden text-sm font-medium text-gray-300 md:block">
                 Bem-vindo <span className="text-cyan-500">{user.email}</span>
               </p>
             )}
@@ -92,7 +94,7 @@ export default function HomePage() {
                   className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
                   onClick={handleClick}
                 >
-                  <span className="font-bold text-cyan-500">L</span>ogout
+                  Logout
                 </Link>
               ) : (
                 <>
@@ -100,13 +102,13 @@ export default function HomePage() {
                     href="/login"
                     className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
                   >
-                    <span className="font-bold text-cyan-500">L</span>ogin
+                    Login
                   </Link>
                   <Link
                     href="/signup"
                     className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
                   >
-                    <span className="font-bold text-cyan-500">C</span>adastro
+                    Cadastro
                   </Link>
                 </>
               )}
@@ -125,7 +127,7 @@ export default function HomePage() {
                 className="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
                 onClick={handleClick}
               >
-                <span className="font-bold text-cyan-500">L</span>ogout
+                Logout
               </Link>
             ) : (
               <>
@@ -133,13 +135,13 @@ export default function HomePage() {
                   href="/login"
                   className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
                 >
-                  <span className="font-bold text-cyan-500">L</span>ogin
+                  Login
                 </Link>
                 <Link
                   href="/signup"
                   className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
                 >
-                  <span className="font-bold text-cyan-500">C</span>adastro
+                  Cadastro
                 </Link>
               </>
             )}

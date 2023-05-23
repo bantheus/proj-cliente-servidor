@@ -1,4 +1,5 @@
 import Usuario from "../models/User.js";
+import InvalidToken from "../models/invalidToken.js";
 // import mongoose from "mongoose";
 import jwt from "jsonwebtoken";
 import * as dotenv from "dotenv";
@@ -22,6 +23,7 @@ export const loginUser = async (req, res) => {
     }
 
     const user = await Usuario.findOne({ email });
+    console.log(user);
 
     if (!user) {
       return res.status(401).json({ message: "Credenciais inválidas!" });
@@ -82,7 +84,36 @@ export const signupUser = async (req, res) => {
     return res
       .status(201)
       .json({ _id: user._id, name: user.name, email: user.email });
-  } catch (erro) {
+  } catch (error) {
+    return res.status(500).json({ message: "Erro no servidor!" });
+  }
+};
+
+// Logout
+export const logoutUser = async (req, res) => {
+  try {
+    const userId = req.body.userId;
+    const token = req.headers.authorization;
+
+    const user = await Usuario.findOne({ _id: userId });
+
+    if (!user) {
+      return res.status(404).json({ message: "Usuário não encontrado" });
+    }
+
+    const existingToken = await InvalidToken.findOne({ token });
+
+    if (existingToken) {
+      return res.status(401).json({ message: "Token inválido" });
+    }
+
+    await InvalidToken.create({
+      token,
+      expirationDate: new Date(Date.now() + 24 * 60 * 60 * 1000),
+    });
+
+    return res.status(200).json({ message: "Logout realizado com sucesso!" });
+  } catch (error) {
     return res.status(500).json({ message: "Erro no servidor!" });
   }
 };

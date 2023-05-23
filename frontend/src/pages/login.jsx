@@ -6,12 +6,11 @@ import Image from "next/image";
 import Input from "@/components/form/input";
 import Button from "@/components/form/button";
 import { useLogin } from "@/hooks/useLogin";
-import Error from "@/components/error";
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setSenha] = useState("");
-  const { login, message, isLoading } = useLogin();
+  const { login, isLoading } = useLogin();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -62,7 +61,6 @@ export default function Login() {
               />
 
               <Button tipo="submit" texto="Login" disabled={isLoading} />
-              {message && <Error erroMensagem={message} />}
             </form>
             <Link
               href="/home"

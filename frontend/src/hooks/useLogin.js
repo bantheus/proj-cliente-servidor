@@ -2,16 +2,16 @@ import { useState } from "react";
 import { useAuthContext } from "./useAuthContext";
 import md5 from "md5";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const useLogin = () => {
-  const [message, setMessage] = useState(null);
   const [isLoading, setIsLoading] = useState(null);
   const { dispatch } = useAuthContext();
   const router = useRouter();
 
   const login = async (email, password) => {
     setIsLoading(true);
-    setMessage(null);
 
     const hashPassword = md5(password);
 
@@ -24,7 +24,7 @@ export const useLogin = () => {
 
     if (!response.ok) {
       setIsLoading(false);
-      setMessage(json.message);
+      toast.error(json.message);
     }
 
     if (response.ok) {
@@ -32,9 +32,10 @@ export const useLogin = () => {
 
       dispatch({ type: "LOGIN", payload: json });
       setIsLoading(false);
+      toast.success("Usuário Logado com sucesso!");
       router.push("home");
     }
   };
 
-  return { login, isLoading, message };
+  return { login, isLoading };
 };

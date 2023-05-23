@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { useAuthContext } from "./useAuthContext";
 import { useRouter } from "next/router";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export const useLogout = () => {
-  const [isLoading, setIsLoading] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
   const { dispatch } = useAuthContext();
   const router = useRouter();
 
@@ -24,19 +26,15 @@ export const useLogout = () => {
 
     if (!response.ok) {
       setIsLoading(false);
+      const json = await response.json();
+      toast.error(json.message);
     }
 
     if (response.ok) {
       localStorage.removeItem("user");
       dispatch({ type: "LOGOUT" });
-      router.push("login");
-    }
-
-    if (response.ok) {
-      localStorage.removeItem("user");
-      dispatch({ type: "LOGOUT" });
-      setIsLoading(false);
-      router.push("login");
+      toast.success("Usuário deslogado com sucesso!");
+      router.push("/login");
     }
   };
 

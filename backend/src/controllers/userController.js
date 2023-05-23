@@ -61,18 +61,22 @@ export const signupUser = async (req, res) => {
       return res.status(400).json({ message: "Email inválido!" });
     }
 
-    if (password.length < 2) {
-      return res
-        .status(400)
-        .json({ message: "A senha não é forte o suficiente!" });
-    }
-
     const exists = await Usuario.findOne({ email });
 
     if (exists) {
       return res
         .status(422)
         .json({ message: "Este email já está sendo utilizado!" });
+    }
+
+    if (password.trim().length < 2) {
+      return res
+        .status(400)
+        .json({ message: "A senha não é forte o suficiente!" });
+    }
+
+    if (!password.trim()) {
+      return res.status(400).json({ message: "A senha é obrigatória!" });
     }
 
     const user = await Usuario.create({

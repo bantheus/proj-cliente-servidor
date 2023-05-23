@@ -6,13 +6,12 @@ import Image from "next/image";
 import Input from "@/components/form/input";
 import Button from "@/components/form/button";
 import { useSignup } from "@/hooks/useSignup";
-import Error from "@/components/error";
 
 export default function Signup() {
   const [name, setNome] = useState("");
   const [email, setEmail] = useState("");
   const [password, setSenha] = useState("");
-  const { signup, message, isLoading } = useSignup();
+  const { signup, isLoading } = useSignup();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -72,7 +71,6 @@ export default function Signup() {
               />
 
               <Button tipo="submit" texto="Cadastrar" disabled={isLoading} />
-              {message && <Error erroMensagem={message} />}
             </form>
             <div className="mt-6 flex md:mt-3 lg:mt-6">
               <Link

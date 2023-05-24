@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useAuthContext } from "./useAuthContext";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
+import { baseUrl } from "@/api/baseUrl";
 import "react-toastify/dist/ReactToastify.css";
 
 export const useLogout = () => {
@@ -13,15 +14,15 @@ export const useLogout = () => {
     setIsLoading(true);
     const user = JSON.parse(localStorage.getItem("user"));
     const token = user ? user.token : "";
-    const userId = user ? user._id : "";
+    const id = user ? user.id : "";
 
-    const response = await fetch("http://localhost:20000/users/logout", {
+    const response = await fetch(`${baseUrl}/logout`, {
       method: "post",
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({ userId }),
+      body: JSON.stringify({ id }),
     });
 
     if (!response.ok) {

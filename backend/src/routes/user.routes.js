@@ -15,7 +15,7 @@ export const userRouter = Router();
 userRouter.post("/login", loginUser);
 
 // Signup
-userRouter.post("/", signupUser);
+userRouter.post("/users", signupUser);
 
 // Logout
 userRouter.post("/logout", logoutUser);

@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { useAuthContext } from "./useAuthContext";
 import { useRouter } from "next/router";
-import md5 from "md5";
 import { toast } from "react-toastify";
+import { baseUrl } from "@/api/baseUrl";
+import md5 from "md5";
 import "react-toastify/dist/ReactToastify.css";
 
 export const useSignup = () => {
@@ -27,7 +28,7 @@ export const useSignup = () => {
 
     const hashPassword = md5(password);
 
-    const response = await fetch("http://localhost:20000/users/", {
+    const response = await fetch(`${baseUrl}/users`, {
       method: "post",
       body: JSON.stringify({ name, email, password: hashPassword }),
       headers: { "Content-Type": "application/json" },

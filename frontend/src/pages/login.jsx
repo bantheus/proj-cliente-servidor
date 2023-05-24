@@ -38,7 +38,7 @@ export default function Login() {
         <div className="max-h-[90vh] w-full max-w-md md:max-h-[90vh] 2xl:max-h-[70vh]">
           <div className="card-input">
             <h3 className="mb-4 text-center text-3xl font-bold text-white md:text-4xl">
-              <span className="text-cyan-500 ">ReporT</span>rânsito
+              <span className="text-cyan-500 ">SAO</span>ITR
             </h3>
 
             <form className="space-y-4" onSubmit={handleSubmit}>

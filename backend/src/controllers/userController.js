@@ -15,6 +15,7 @@ const createToken = (_id) => {
 export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
+    console.log(`Email -> ${email} | Password -> ${password}`);
 
     if (!email || !password) {
       return res
@@ -23,7 +24,7 @@ export const loginUser = async (req, res) => {
     }
 
     const user = await Usuario.findOne({ email });
-    console.log(user);
+    console.log(`User -> ${user}`);
 
     if (!user) {
       return res.status(401).json({ message: "Credenciais inválidas!" });
@@ -36,12 +37,13 @@ export const loginUser = async (req, res) => {
     const token = createToken(user._id);
 
     return res.status(200).json({
-      _id: user._id,
+      id: user._id,
       name: user.name,
       email: user.email,
       token,
     });
   } catch (erro) {
+    console.error(erro.message);
     return res.status(500).json({ message: "Erro no servidor!" });
   }
 };
@@ -50,6 +52,10 @@ export const loginUser = async (req, res) => {
 export const signupUser = async (req, res) => {
   try {
     const { name, email, password } = req.body;
+
+    console.log(
+      `Name -> ${name} | Email -> ${email} | Password -> ${password}`
+    );
 
     if (!name || !email || !password) {
       return res
@@ -87,8 +93,9 @@ export const signupUser = async (req, res) => {
 
     return res
       .status(201)
-      .json({ _id: user._id, name: user.name, email: user.email });
-  } catch (error) {
+      .json({ id: user._id, name: user.name, email: user.email });
+  } catch (erro) {
+    console.error(erro.message);
     return res.status(500).json({ message: "Erro no servidor!" });
   }
 };
@@ -96,10 +103,13 @@ export const signupUser = async (req, res) => {
 // Logout
 export const logoutUser = async (req, res) => {
   try {
-    const userId = req.body.userId;
+    const id = req.body.id;
     const token = req.headers.authorization;
 
-    const user = await Usuario.findOne({ _id: userId });
+    console.log(`Id-> ${id} | Token -> ${token}`);
+
+    const user = await Usuario.findOne({ _id: id });
+    console.log(`User-> ${user}`);
 
     if (!user) {
       return res.status(404).json({ message: "Usuário não encontrado" });
@@ -117,7 +127,7 @@ export const logoutUser = async (req, res) => {
     });
 
     return res.status(200).json({ message: "Logout realizado com sucesso!" });
-  } catch (error) {
+  } catch (erro) {
     return res.status(500).json({ message: "Erro no servidor!" });
   }
 };

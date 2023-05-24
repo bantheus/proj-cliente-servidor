@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { useAuthContext } from "./useAuthContext";
-import md5 from "md5";
 import { useRouter } from "next/router";
 import { toast } from "react-toastify";
+import { baseUrl } from "@/api/baseUrl";
+
+import md5 from "md5";
+
 import "react-toastify/dist/ReactToastify.css";
 
 export const useLogin = () => {
@@ -15,7 +18,7 @@ export const useLogin = () => {
 
     const hashPassword = md5(password);
 
-    const response = await fetch("http://localhost:20000/users/login", {
+    const response = await fetch(`${baseUrl}/login`, {
       method: "post",
       body: JSON.stringify({ email, password: hashPassword }),
       headers: { "Content-Type": "application/json" },
@@ -29,7 +32,6 @@ export const useLogin = () => {
 
     if (response.ok) {
       localStorage.setItem("user", JSON.stringify(json));
-
       dispatch({ type: "LOGIN", payload: json });
       setIsLoading(false);
       toast.success("Usuário Logado com sucesso!");

@@ -1,7 +1,7 @@
 <div align="center">
   <br>
     <h1 style="font-weight: bold;"><span style="color: rgb(6, 182, 212);">SAO</span>ITR 🚗</h1>
-    <h2>Sistema de Ocorrências de Trânsito</h2>
+    <h2>Sistema de aviso de ocorrências de interrupção de tráfego em rodovias</h2>
 </div>
 
 <br>

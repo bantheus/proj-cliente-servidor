@@ -28,7 +28,6 @@ export default function HomePage() {
                 <Link
                   href="/home"
                   className="text-2xl font-bold text-white"
-                  onClick={handleClick}
                 >
                   <span className="text-cyan-500">SAO</span>ITR
                 </Link>

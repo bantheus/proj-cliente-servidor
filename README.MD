@@ -31,9 +31,9 @@
 
 <br>
 
-### Como executar o projeto
+<h2 style="font-weight: bold;">Como executar o projeto</h2>
 
-#### Pré-requisitos
+<h3 style="font-weight: bold;">Pré-requisitos</h3>
 
 <div>
 <ul>
@@ -48,7 +48,7 @@ Se você possuir o <a href="https://www.docker.com/" target="_blank">Docker</a> 
 $ docker compose up -d
 ```
 
-#### BackEnd
+<h3 style="font-weight: bold;">BackEnd</h3>
 
 ```bash
 # Clone este repositório
@@ -66,7 +66,7 @@ $ npm run dev
 # O servidor inciará na porta:20000 - acesse http://localhost:20000
 ```
 
-#### FrontEnd
+<h3 style="font-weight: bold;">FrontEnd</h3>
 
 ```bash
 # Clone este repositório

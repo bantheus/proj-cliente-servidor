@@ -60,6 +60,11 @@ $ cd backend
 # Instale as dependências
 $ npm install
 
+# Crie um arquivo .env com base no arquivo .env.example
+$ cp .env.example .env
+
+# Preencha as variáveis de ambiente no arquivo .env
+
 # Execute a aplicação em modo de desenvolvimento
 $ npm run dev
 

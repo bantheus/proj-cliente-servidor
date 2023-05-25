@@ -35,11 +35,14 @@
 
 #### Pré-requisitos
 
-- [Node.js](https://nodejs.org/en/)
+<div>
+<ul>
+  <li><a href="https://nodejs.org/en/" targer="_blank">Node.js</a></li>
+  <li><a href="https://www.mongodb.com/" targer="_blank">MongoDB</a></li>
+</ul>
+</div>
 
-- [MongoDB](https://www.mongodb.com/)
-
-Se você possuir o [Docker](https://www.docker.com/) instalado, pode executar o arquivo `docker-compose.yml` para criar um container com o MongoDB.
+Se você possuir o <a href="https://www.docker.com/" targer="_blank">Docker</a> instalado, pode executar o arquivo `docker-compose.yml` para criar um container com o MongoDB.
 
 ```bash
 $ docker compose up -d

@@ -62,12 +62,15 @@ export default function Login() {
 
               <Button tipo="submit" texto="Login" disabled={isLoading} />
             </form>
-            <Link
-              href="/home"
-              className="mt-2 block text-right text-white hover:text-cyan-400"
-            >
-              Entrar sem conta
-            </Link>
+            <div className="flex justify-end">
+              <Link
+                href="/home"
+                className="mt-3 inline-block text-right text-white hover:text-cyan-400"
+              >
+                Entrar sem conta
+              </Link>
+            </div>
+
             <div className="mt-6 flex">
               <Link
                 href="/signup"

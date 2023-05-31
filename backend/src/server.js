@@ -2,6 +2,8 @@ import * as dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 import { userRouter } from "./routes/user.routes.js";
+import { occurrenceRouter } from "./routes/occurrence.routes.js";
+import { authRouter } from "./routes/auth.routes.js";
 import { conectaDb } from "./database/db.js";
 
 dotenv.config();
@@ -16,7 +18,9 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("", userRouter);
+app.use("", authRouter);
+app.use("/users", userRouter);
+app.use("/occurrences", occurrenceRouter);
 
 conectaDb()
   .then(() => {

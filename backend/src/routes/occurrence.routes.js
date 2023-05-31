@@ -1,6 +1,10 @@
 import { Router } from "express";
-import { getOccurrences } from "../controllers/occurrenceController.js";
+import {
+  createOccurrence,
+  getOccurrences,
+} from "../controllers/occurrenceController.js";
 
 export const occurrenceRouter = Router();
 
 occurrenceRouter.get("/", getOccurrences);
+occurrenceRouter.post("/", createOccurrence);

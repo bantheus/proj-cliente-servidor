@@ -4,17 +4,21 @@ import Usuario from "../models/User.js";
 
 export const getOccurrences = async (req, res) => {
   try {
-    const token = req.headers.authorization;
-    const occurrence = await Occurrence.find({}).sort({ createdAt: -1 });
-    res.status(200).json({
-      occurrence: occurrence.id,
-      registered_at: occurrence.registered_at,
-      local: occurrence.local,
-      occurrence_type: occurrence.occurrence_type,
-      km: occurrence.km,
-      token: token,
-      user_id: occurrence.user_id,
-    });
+    const data = await Occurrence.find({});
+    if (data.length > 0) {
+      const occurrences = data.map((occurrence) => ({
+        id: occurrence._id,
+        registered_at: occurrence.registered_at,
+        local: occurrence.local,
+        occurrence_type: occurrence.occurrence_type,
+        km: occurrence.km,
+        token: occurrence.token,
+        user_id: occurrence.user_id,
+      }));
+      res.status(200).json(occurrences);
+    } else {
+      res.status(404).json({ message: "Nenhuma ocorrência encontrada" });
+    }
   } catch (error) {
     res.status(500).json({ message: "Erro no servidor" });
   }
@@ -26,7 +30,7 @@ export const createOccurrence = async (req, res) => {
     const token = req.headers.authorization;
 
     console.log(
-      `Registered At -> ${registered_at} | Local -> ${local} | Occurrence Type -> ${occurrence_type} | Km -> ${km} | User Id -> ${user_id}`
+      `Registered At -> ${registered_at} | Local -> ${local} | Occurrence Type -> ${occurrence_type} | Km -> ${km} | User Id -> ${user_id} | Token -> ${token}`
     );
 
     if (!token) {
@@ -57,11 +61,12 @@ export const createOccurrence = async (req, res) => {
       local,
       occurrence_type,
       km,
+      token,
       user_id,
     });
 
     return res.status(201).json({
-      occurrence: occurrence.id,
+      id: occurrence._id,
       registered_at: occurrence.registered_at,
       local: occurrence.local,
       occurrence_type: occurrence.occurrence_type,

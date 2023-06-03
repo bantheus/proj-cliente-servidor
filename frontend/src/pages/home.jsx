@@ -1,152 +1,162 @@
-import Link from "next/link";
-import { useState } from "react";
-import { useLogout } from "@/hooks/useLogout";
+import { baseUrl } from "@/api/baseUrl";
+import Navbar from "@/components/navbar";
+import OccurrenceForm from "@/components/occurrenceForm/occurrenceForm";
+import { useEffect, useState } from "react";
 import { useAuthContext } from "@/hooks/useAuthContext";
+import { format } from "date-fns";
+import ReactPaginate from "react-paginate";
 
 export default function HomePage() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { logout, isLoading } = useLogout();
+  const [occurrences, setOccurrences] = useState(null);
+  const [pageNumber, setPageNumber] = useState(0);
   const { user } = useAuthContext();
+  const occurrencesPerPage = 6;
+  const pagesVisited = pageNumber * occurrencesPerPage;
 
-  const toggleMenu = () => {
-    setIsMenuOpen(!isMenuOpen);
+  useEffect(() => {
+    const fetchOccurrences = async () => {
+      const response = await fetch(`${baseUrl}/occurrences`);
+      const json = await response.json();
+      console.log(json);
+
+      if (response.ok) {
+        setOccurrences(json);
+      }
+    };
+
+    fetchOccurrences();
+  }, []);
+
+  const formatDateTime = (dateTime) => {
+    return format(new Date(dateTime), "dd-MM-yyyy HH:mm:ss");
   };
 
-  const handleClick = () => {
-    if (!isLoading) {
-      logout();
-    }
+  const pageCount = Math.ceil(occurrences?.length / occurrencesPerPage);
+
+  const changePage = ({ selected }) => {
+    setPageNumber(selected);
+  };
+
+  const renderOccurrencesTable = () => {
+    return (
+      <div className="table-responsive">
+        <table className="w-full overflow-hidden rounded-lg bg-gray-800 text-white">
+          <thead className="bg-gray-800">
+            <tr>
+              <th className="px-6 py-3 text-left text-lg font-semibold">
+                Tipo de Ocorrência
+              </th>
+              <th className="px-6 py-3 text-left text-lg font-semibold">
+                Data da Ocorrência
+              </th>
+              <th className="px-6 py-3 text-left text-lg font-semibold">
+                Local
+              </th>
+              <th className="px-6 py-3 text-left text-lg font-semibold">KM</th>
+              <th className="px-6 py-3 text-left text-lg font-semibold">
+                Criado por
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {occurrences
+              .slice(pagesVisited, pagesVisited + occurrencesPerPage)
+              .map((occurrence, index) => (
+                <tr
+                  key={occurrence.id}
+                  className={index % 2 === 0 ? "bg-gray-700" : "bg-gray-600"}
+                >
+                  <td className="px-6 py-4">{occurrence.occurrence_type}</td>
+                  <td className="px-6 py-4">
+                    {formatDateTime(occurrence.registered_at)}
+                  </td>
+                  <td className="px-6 py-4">{occurrence.local}</td>
+                  <td className="px-6 py-4">{occurrence.km}</td>
+                  <td className="px-6 py-4">{occurrence.user_id}</td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  };
+
+  const renderOccurrencesCards = () => {
+    return (
+      <div>
+        {occurrences
+          .slice(pagesVisited, pagesVisited + occurrencesPerPage)
+          .map((occurrence, index) => (
+            <div
+              key={occurrence.id}
+              className={`${
+                index % 2 === 0 ? "bg-gray-700" : "bg-gray-600"
+              } mb-4 rounded-lg p-4`}
+            >
+              <p className="text-lg font-semibold">
+                Tipo de Ocorrência: {occurrence.occurrence_type}
+              </p>
+              <p className="text-sm">
+                Data da Ocorrência: {formatDateTime(occurrence.registered_at)}
+              </p>
+              <p className="text-sm">Local: {occurrence.local}</p>
+              <p className="text-sm">KM: {occurrence.km}</p>
+              <p className="text-sm">Criado por: {occurrence.user_id}</p>
+            </div>
+          ))}
+      </div>
+    );
   };
 
   return (
-    <>
-      <nav className="bg-gray-800">
-        <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-          <div className="relative flex h-16 items-center justify-between">
-            <div className="flex flex-1 items-center justify-start sm:items-stretch sm:justify-start">
-              <div className="flex flex-shrink-0 items-center">
-                <Link
-                  href="/home"
-                  className="text-2xl font-bold text-white"
-                >
-                  <span className="text-cyan-500">SAO</span>ITR
-                </Link>
-              </div>
-            </div>
+    <div className="px min-h-screen bg-gray-900 text-white">
+      <Navbar />
+      <div className="flex flex-col px-8 pt-8 md:flex-row">
+        <div className="w-full pr-0 md:w-3/4 md:pr-4">
+          {Array.isArray(occurrences) && occurrences.length > 0 ? (
+            <div className="hidden md:block">{renderOccurrencesTable()}</div>
+          ) : (
+            <p className="text-white">Nenhuma ocorrência encontrada.</p>
+          )}
 
-            {user && (
-              <p className="hidden text-sm font-medium text-gray-300 md:block">
-                Bem-vindo <span className="text-cyan-500">{user.email}</span>
+          {Array.isArray(occurrences) && occurrences.length > 0 ? (
+            <div className="md:hidden">{renderOccurrencesCards()}</div>
+          ) : null}
+
+          {occurrences && occurrences.length > occurrencesPerPage && (
+            <div className="mt-4 flex justify-center">
+              <ReactPaginate
+                previousLabel={"Anterior"}
+                nextLabel={"Próxima"}
+                pageCount={pageCount}
+                onPageChange={changePage}
+                containerClassName="pagination flex space-x-2 text-white"
+                pageClassName="bg-gray-600 py-2 px-3 rounded-md hover:bg-gray-700 cursor-pointer"
+                previousClassName="bg-gray-600 py-2 px-3 rounded-md hover:bg-gray-700 cursor-pointer"
+                nextClassName="bg-gray-600 py-2 px-3 rounded-md hover:bg-gray-700 cursor-pointer"
+                disabledClassName="opacity-50 cursor-not-allowed"
+                activeClassName="bg-cyan-700 font-bold hover:bg-cyan-600"
+                previousLinkClassName="flex items-center"
+                nextLinkClassName="flex items-center"
+                previousLinkLabel={<i className="fas fa-chevron-left"></i>}
+                nextLinkLabel={<i className="fas fa-chevron-right"></i>}
+              />
+            </div>
+          )}
+        </div>
+
+        <div className="mt-4 w-full pl-0 md:mt-0 md:w-1/4 md:pl-4">
+          {user ? (
+            <OccurrenceForm />
+          ) : (
+            <div className="rounded-lg bg-gray-800 p-4">
+              <p className="text-white">
+                Você precisa estar logado para criar uma ocorrência.
               </p>
-            )}
-
-            <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:hidden">
-              <button
-                type="button"
-                className="inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-                aria-controls="mobile-menu"
-                aria-expanded={isMenuOpen ? "true" : "false"}
-                onClick={toggleMenu}
-              >
-                <span className="sr-only">Open main menu</span>
-                <svg
-                  className={`block h-6 w-6 ${isMenuOpen ? "hidden" : "block"}`}
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4 6h16M4 12h16M4 18h16"
-                  />
-                </svg>
-                <svg
-                  className={`h-6 w-6 ${isMenuOpen ? "block" : "hidden"}`}
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  aria-hidden="true"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M6 18L18 6M6 6l12 12"
-                  />
-                </svg>
-              </button>
             </div>
-
-            <div
-              className={`space-x-4 sm:flex ${
-                isMenuOpen ? "hidden" : "block"
-              } hidden sm:block`}
-            >
-              {user ? (
-                <Link
-                  href="/"
-                  className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
-                  onClick={handleClick}
-                >
-                  Logout
-                </Link>
-              ) : (
-                <>
-                  <Link
-                    href="/login"
-                    className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
-                  >
-                    Login
-                  </Link>
-                  <Link
-                    href="/signup"
-                    className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
-                  >
-                    Cadastro
-                  </Link>
-                </>
-              )}
-            </div>
-          </div>
+          )}
         </div>
-
-        <div
-          className={`${isMenuOpen ? "block" : "hidden"} sm:hidden`}
-          id="mobile-menu"
-        >
-          <div className="flex flex-col items-center space-y-1 px-2 pb-3 pt-2">
-            {user ? (
-              <Link
-                href="/"
-                className="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
-                onClick={handleClick}
-              >
-                Logout
-              </Link>
-            ) : (
-              <>
-                <Link
-                  href="/login"
-                  className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
-                >
-                  Login
-                </Link>
-                <Link
-                  href="/signup"
-                  className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
-                >
-                  Cadastro
-                </Link>
-              </>
-            )}
-          </div>
-        </div>
-      </nav>
-    </>
+      </div>
+    </div>
   );
 }

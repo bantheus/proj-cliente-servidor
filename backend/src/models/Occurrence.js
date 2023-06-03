@@ -1,35 +1,42 @@
 import mongoose, { Schema } from "mongoose";
 import Counter from "./Counter.js";
 
-const occurenceSchema = new mongoose.Schema({
+const occurrenceSchema = new mongoose.Schema({
   _id: {
     type: Number,
     unique: true,
   },
   registered_at: {
-    type: Date,
+    type: String,
     required: true,
   },
   local: {
     type: String,
     required: true,
+    minlength: 10,
+    maxlength: 125,
   },
-  occurence_type: {
+  occurrence_type: {
     type: Number,
     required: true,
+    minlength: 1,
   },
   km: {
     type: Number,
     required: true,
+    minlength: 10,
+  },
+  token: {
+    type: String,
   },
   user_id: {
-    type: Schema.Types.ObjectId,
+    type: Number,
     ref: "Usuario",
     required: true,
   },
 });
 
-occurenceSchema.pre("save", async function (next) {
+occurrenceSchema.pre("save", async function (next) {
   if (!this.isNew) {
     return next();
   }
@@ -48,6 +55,6 @@ occurenceSchema.pre("save", async function (next) {
   }
 });
 
-const Occurrence = mongoose.model("Occurrence", occurenceSchema);
+const Occurrence = mongoose.model("Occurrence", occurrenceSchema);
 
 export default Occurrence;

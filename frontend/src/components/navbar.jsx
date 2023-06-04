@@ -33,7 +33,9 @@ export default function Navbar() {
 
             {user && (
               <p className="hidden text-sm font-medium text-gray-300 md:block">
-                Bem-vindo <span className="text-cyan-500">{user.email}</span>
+                <a href="/usuario">
+                  Bem-vindo <span className="text-cyan-500">{user.email}</span>
+                </a>
               </p>
             )}
 

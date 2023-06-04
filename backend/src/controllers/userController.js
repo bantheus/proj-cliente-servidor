@@ -176,7 +176,7 @@ export const getUsers = async (req, res) => {
 //Update;
 export const updateUser = async (req, res) => {
   try {
-    const id = req.body.id;
+    const id = req.params.id;
     const { name, email, password } = req.body;
     const token = req.headers.authorization;
 
@@ -186,45 +186,45 @@ export const updateUser = async (req, res) => {
 
     const existingToken = await InvalidToken.findOne({ token });
 
-    if (!mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(400).json({ erro: "Nenhum usuário encontrado!" });
-    }
-
     if (existingToken) {
       return res.status(401).json({ message: "Token inválido" });
     }
 
     const user = await Usuario.findOne({ _id: id });
-    console.log(`User-> ${user}`);
 
     if (!user) {
       return res.status(404).json({ message: "Usuário não encontrado" });
     }
 
-    const exists = await Usuario.findOne({ email });
+    if (email !== user.email) {
+      const exists = await Usuario.findOne({ email });
 
-    if (exists) {
-      return res
-        .status(422)
-        .json({ message: "Este email já está sendo utilizado!" });
+      if (exists) {
+        return res
+          .status(422)
+          .json({ message: "Este email já está sendo utilizado!" });
+      }
     }
 
-    if (password.trim().length < 2) {
-      return res
-        .status(400)
-        .json({ message: "A senha não é forte o suficiente!" });
+    if (password.trim()) {
+      if (password.trim().length < 2) {
+        return res
+          .status(400)
+          .json({ message: "A senha não é forte o suficiente!" });
+      }
     }
 
     if (!password.trim()) {
-      return res.status(400).json({ message: "A senha é obrigatória!" });
+      await Usuario.findOneAndUpdate({ _id: id }, { name, email });
+    } else {
+      await Usuario.findOneAndUpdate({ _id: id }, { name, email, password });
     }
-
-    await Usuario.findOneAndUpdate({ _id: id }, { name, email, password });
 
     return res
       .status(200)
       .json({ id: user._id, name: user.name, email: user.email });
   } catch (erro) {
+    console.log(erro);
     return res.status(500).json({ message: "Erro no servidor!" });
   }
 };

@@ -180,6 +180,10 @@ export const updateUser = async (req, res) => {
     const { name, email, password } = req.body;
     const token = req.headers.authorization;
 
+    console.log(
+      `Id -> ${id} | Name -> ${name} | Email -> ${email} | Password -> ${password} | Token -> ${token}`
+    );
+
     if (!token) {
       return res.status(401).json({ message: "Token não informado!" });
     }
@@ -191,6 +195,8 @@ export const updateUser = async (req, res) => {
     }
 
     const user = await Usuario.findOne({ _id: id });
+
+    console.log(user);
 
     if (!user) {
       return res.status(404).json({ message: "Usuário não encontrado" });
@@ -206,19 +212,19 @@ export const updateUser = async (req, res) => {
       }
     }
 
-    if (password.trim()) {
-      if (password.trim().length < 2) {
-        return res
-          .status(400)
-          .json({ message: "A senha não é forte o suficiente!" });
-      }
+    if (password && password.trim().length < 2) {
+      return res
+        .status(400)
+        .json({ message: "A senha não é forte o suficiente!" });
     }
 
-    if (!password.trim()) {
-      await Usuario.findOneAndUpdate({ _id: id }, { name, email });
-    } else {
-      await Usuario.findOneAndUpdate({ _id: id }, { name, email, password });
+    const updateData = { name, email };
+
+    if (password !== null) {
+      updateData.password = password;
     }
+
+    await Usuario.findOneAndUpdate({ _id: id }, updateData);
 
     return res
       .status(200)

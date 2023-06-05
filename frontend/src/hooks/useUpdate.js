@@ -16,7 +16,7 @@ export const useUpdate = () => {
   const update = async (name, email, password) => {
     setIsLoading(true);
 
-    const hashPassword = md5(password);
+    const hashPassword = password ? md5(password) : null; // Verifica se a senha foi informada
     const user = JSON.parse(localStorage.getItem("user"));
     const token = user ? user.token : "";
     const id = user ? user.id : "";
@@ -26,7 +26,7 @@ export const useUpdate = () => {
       body: JSON.stringify({
         name,
         email,
-        password: password ? hashPassword : "",
+        password: hashPassword,
       }),
       headers: {
         "Content-Type": "application/json",

@@ -32,7 +32,7 @@ export default function OccurrenceForm() {
       registered_at: formattedDateTime,
       local: local,
       occurrence_type: Number(occurrenceType),
-      km: km,
+      km: Number(km),
       user_id: id,
     };
 

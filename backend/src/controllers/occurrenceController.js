@@ -17,7 +17,9 @@ export const getOccurrences = async (req, res) => {
       }));
       res.status(200).json(occurrences);
     } else {
-      res.status(404).json({ message: "Nenhuma ocorrência encontrada" });
+      res
+        .status(200)
+        .json({ message: "Nenhuma ocorrência encontrada", occurrences: [] });
     }
   } catch (error) {
     res.status(500).json({ message: "Erro no servidor" });

@@ -13,7 +13,7 @@ const occurrenceSchema = new mongoose.Schema({
   local: {
     type: String,
     required: true,
-    minlength: 10,
+    minlength: 1,
     maxlength: 125,
   },
   occurrence_type: {
@@ -24,7 +24,7 @@ const occurrenceSchema = new mongoose.Schema({
   km: {
     type: Number,
     required: true,
-    minlength: 10,
+    minlength: 1,
   },
   token: {
     type: String,

@@ -25,6 +25,7 @@ const occurrenceSchema = new mongoose.Schema({
     type: Number,
     required: true,
     minlength: 1,
+    maxlength: 9999,
   },
   token: {
     type: String,

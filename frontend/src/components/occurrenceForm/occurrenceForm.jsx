@@ -8,17 +8,6 @@ export default function OccurrenceForm() {
   const [occurrenceType, setOccurrenceType] = useState("");
   const currentDateTime = new Date().toISOString().slice(0, 16);
 
-  function formatDateTime(dateTime) {
-    const year = dateTime.getFullYear();
-    const month = String(dateTime.getMonth() + 1).padStart(2, "0");
-    const day = String(dateTime.getDate()).padStart(2, "0");
-    const hours = String(dateTime.getHours()).padStart(2, "0");
-    const minutes = String(dateTime.getMinutes()).padStart(2, "0");
-    const seconds = String(dateTime.getSeconds()).padStart(2, "0");
-
-    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-  }
-
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -26,10 +15,8 @@ export default function OccurrenceForm() {
     const token = user ? user.token : "";
     const id = user ? user.id : "";
 
-    const formattedDateTime = formatDateTime(new Date(registeredAt));
-
     const occurrence = {
-      registered_at: formattedDateTime,
+      registered_at: registeredAt,
       local: local,
       occurrence_type: Number(occurrenceType),
       km: Number(km),

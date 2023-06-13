@@ -58,6 +58,13 @@ export const createOccurrence = async (req, res) => {
         .json({ message: "Todos os campos devem ser preenchidos!" });
     }
 
+    const currentDate = new Date();
+    const occurrenceDate = new Date(registered_at);
+
+    if (occurrenceDate > currentDate) {
+      return res.status(400).json({ message: "A data de ocorrência não pode ser superior à data atual!" });
+    }
+
     const occurrence = await Occurrence.create({
       registered_at,
       local,
@@ -81,3 +88,4 @@ export const createOccurrence = async (req, res) => {
     return res.status(500).json({ message: "Erro no servidor!" });
   }
 };
+

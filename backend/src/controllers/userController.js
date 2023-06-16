@@ -139,22 +139,25 @@ export const getUsers = async (req, res) => {
   res.status(200).json(usuarios);
 };
 
-// // Get One
-// export const getUser = async (req, res) => {
-//   const { id } = req.params;
+//Get One
+export const getUser = async (req, res) => {
+  const { id } = req.params;
 
-//   if (!mongoose.Types.ObjectId.isValid(id)) {
-//     return res.status(400).json({ erro: "Nenhum usuário encontrado!" });
-//   }
+  try {
+    const user = await Usuario.findOne({ _id: id });
+    console.log(`User-> ${user}`);
 
-//   const usuario = await Usuario.findById(id);
+    if (!user) {
+      return res.status(404).json({ message: "Usuário não encontrado" });
+    }
 
-//   if (!usuario) {
-//     return res.status(400).json({ erro: "Nenhum usuário encontrado!" });
-//   }
-
-//   res.status(200).json({ msg: "Usuário encontrado com sucesso" });
-// };
+    return res
+      .status(200)
+      .json({ id: user._id, name: user.name, email: user.email });
+  } catch (erro) {
+    return res.status(500).json({ message: "Erro no servidor!" });
+  }
+};
 
 // // Delete
 // export const deleteUser = async (req, res) => {

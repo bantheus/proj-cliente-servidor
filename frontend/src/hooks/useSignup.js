@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useAuthContext } from "./useAuthContext";
 import { useRouter } from "next/router";
-import { toast } from "react-toastify";
 import { baseUrl } from "@/api/baseUrl";
 import md5 from "md5";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export const useSignup = () => {

@@ -1,7 +1,9 @@
 import { baseUrl } from "@/api/baseUrl";
 import { useState } from "react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-export default function OccurrenceForm() {
+export default function OccurrenceForm({setOccurrence}) {
   const [registeredAt, setRegisteredAt] = useState("");
   const [local, setLocal] = useState("");
   const [km, setKm] = useState("");
@@ -35,7 +37,7 @@ export default function OccurrenceForm() {
     const json = await response.json();
 
     if (!response.ok) {
-      console.log(json.message);
+      toast.error(json.message);
     }
 
     if (response.ok) {
@@ -43,7 +45,8 @@ export default function OccurrenceForm() {
       setLocal("");
       setKm("");
       setOccurrenceType("");
-      console.log("Occurrence added:", json);
+      setOccurrence([]);
+      toast.success("Ocorrência adicionada com sucesso!");
     }
   };
 

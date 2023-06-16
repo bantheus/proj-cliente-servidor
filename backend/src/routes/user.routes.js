@@ -2,7 +2,7 @@ import { Router } from "express";
 import {
   signupUser,
   getUsers,
-  // getUser,
+  getUser,
   // deleteUser,
   updateUser,
 } from "../controllers/userController.js";
@@ -14,6 +14,6 @@ userRouter.post("/", signupUser);
 
 // Others routes
 userRouter.get("/", getUsers);
-// userRouter.get("/:id", getUser);
+userRouter.get("/:id", getUser);
 userRouter.put("/:id", updateUser);
 // userRouter.delete("/:id", deleteUser);

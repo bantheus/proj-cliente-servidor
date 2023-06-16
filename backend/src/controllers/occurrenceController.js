@@ -4,7 +4,7 @@ import Usuario from "../models/User.js";
 
 export const getOccurrences = async (req, res) => {
   try {
-    const data = await Occurrence.find({});
+    const data = await Occurrence.find({}).populate("user_id", "name");
     if (data.length > 0) {
       const occurrences = data.map((occurrence) => ({
         id: occurrence._id,
@@ -13,7 +13,7 @@ export const getOccurrences = async (req, res) => {
         occurrence_type: occurrence.occurrence_type,
         km: occurrence.km,
         token: occurrence.token,
-        user_id: occurrence.user_id,
+        user_id: occurrence.user_id.name,
       }));
       res.status(200).json(occurrences);
     } else {
@@ -34,6 +34,10 @@ export const createOccurrence = async (req, res) => {
     console.log(
       `Registered At -> ${registered_at} | Local -> ${local} | Occurrence Type -> ${occurrence_type} | Km -> ${km} | User Id -> ${user_id} | Token -> ${token}`
     );
+
+    if(occurrence_type <=0 || occurrence_type >10){
+      return res.status(400).json({message: 'Tipo de ocorrência inválida'})
+    }
 
     if (!token) {
       return res.status(401).json({ message: "Token não informado!" });

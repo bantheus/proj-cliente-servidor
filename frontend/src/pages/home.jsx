@@ -7,25 +7,28 @@ import { format } from "date-fns";
 import ReactPaginate from "react-paginate";
 
 export default function HomePage() {
-  const [occurrences, setOccurrences] = useState(null);
+  const [occurrences, setOccurrences] = useState([]);
   const [pageNumber, setPageNumber] = useState(0);
   const { user } = useAuthContext();
   const occurrencesPerPage = 6;
   const pagesVisited = pageNumber * occurrencesPerPage;
 
   useEffect(() => {
-    const fetchOccurrences = async () => {
-      const response = await fetch(`${baseUrl}/occurrences`);
-      const json = await response.json();
-      console.log(json);
+    if(occurrences.length == 0){
+      console.log(occurrences)
+      const fetchOccurrences = async () => {
+        const response = await fetch(`${baseUrl}/occurrences`);
+        const json = await response.json();
+        console.log(json);
 
-      if (response.ok) {
-        setOccurrences(json);
-      }
-    };
+        if (response.ok) {
+          setOccurrences(json);
+        }
+      };
+      fetchOccurrences();
+    }
 
-    fetchOccurrences();
-  }, []);
+  }, [occurrences]);
 
   const formatDateTime = (dateTime) => {
     return format(new Date(dateTime), "dd-MM-yyyy HH:mm:ss");
@@ -147,7 +150,7 @@ export default function HomePage() {
 
         <div className="mt-4 w-full pl-0 md:mt-0 md:w-1/4 md:pl-4">
           {user ? (
-            <OccurrenceForm />
+            <OccurrenceForm  setOccurrence={setOccurrences}/>
           ) : (
             <div className="rounded-lg bg-gray-800 p-4">
               <p className="text-white">

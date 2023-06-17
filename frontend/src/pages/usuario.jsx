@@ -52,7 +52,9 @@ export default function UserPage() {
             changePassword ? "w-96" : "w-96"
           }`}
         >
-          <h1 className="mb-4 text-center text-xl text-white">Alterar dados</h1>
+          <h1 className="mb-4 text-center text-xl text-white">
+            Opções da conta
+          </h1>
           <form onSubmit={handleSubmit}>
             <label className="text-white">
               Nome:

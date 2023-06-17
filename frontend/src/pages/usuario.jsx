@@ -2,6 +2,7 @@ import Navbar from "@/components/navbar";
 import { useState, useEffect } from "react";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { useUpdate } from "@/hooks/useUpdate";
+import { useDelete } from "@/hooks/useDelete";
 
 export default function UserPage() {
   const [name, setName] = useState("");
@@ -9,8 +10,10 @@ export default function UserPage() {
   const [changePassword, setChangePassword] = useState(false);
   const [password, setPassword] = useState("");
   const { update, isLoading } = useUpdate();
+  const { deleteUser } = useDelete();
 
   const { user } = useAuthContext();
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -23,6 +26,21 @@ export default function UserPage() {
     e.preventDefault();
 
     await update(name, email, password);
+  };
+
+  const handleDelete = async (e) => {
+    e.preventDefault();
+
+    setShowDeleteConfirmation(true);
+  };
+
+  const confirmDelete = async () => {
+    await deleteUser();
+    setShowDeleteConfirmation(false);
+  };
+
+  const cancelDelete = () => {
+    setShowDeleteConfirmation(false);
   };
 
   return (
@@ -83,14 +101,48 @@ export default function UserPage() {
               </>
             )}
             <br />
-            <button
-              type="submit"
-              className="mt-4 rounded-md bg-cyan-700 px-4 py-2 text-white"
-              disabled={isLoading}
-            >
-              Atualizar
-            </button>
+            <div className="flex flex-col justify-between md:flex-row">
+              <button
+                type="submit"
+                className="mt-4 min-w-[150px] rounded-md bg-cyan-700 px-4 py-2 text-white"
+                disabled={isLoading}
+              >
+                Atualizar
+              </button>
+              <button
+                onClick={handleDelete}
+                className="mt-4 min-w-[150px] rounded-md bg-red-700 px-4 py-2 text-white"
+                disabled={isLoading}
+              >
+                Deletar Usuário
+              </button>
+            </div>
           </form>
+
+          {showDeleteConfirmation && (
+            <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75">
+              <div className="rounded-md bg-white p-8">
+                <h2 className="mb-4 text-lg font-semibold">
+                  Confirmar exclusão
+                </h2>
+                <p>Tem certeza que deseja excluir sua conta?</p>
+                <div className="mt-4 flex justify-end">
+                  <button
+                    className="mr-2 rounded-md bg-red-500 px-4 py-2 text-white"
+                    onClick={confirmDelete}
+                  >
+                    Concordo
+                  </button>
+                  <button
+                    className="rounded-md bg-gray-300 px-4 py-2 text-gray-800"
+                    onClick={cancelDelete}
+                  >
+                    Voltar
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </>

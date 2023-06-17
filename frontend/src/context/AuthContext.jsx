@@ -10,6 +10,8 @@ export const authReducer = (state, action) => {
       return { user: null };
     case "UPDATE":
       return { user: action.payload };
+    case "DELETE":
+      return { user: null };
     default:
       return state;
   }

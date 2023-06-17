@@ -3,7 +3,7 @@ import {
   signupUser,
   getUsers,
   getUser,
-  // deleteUser,
+  deleteUser,
   updateUser,
 } from "../controllers/userController.js";
 
@@ -16,4 +16,4 @@ userRouter.post("/", signupUser);
 userRouter.get("/", getUsers);
 userRouter.get("/:id", getUser);
 userRouter.put("/:id", updateUser);
-// userRouter.delete("/:id", deleteUser);
+userRouter.delete("/:id", deleteUser);

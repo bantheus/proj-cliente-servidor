@@ -141,9 +141,8 @@ export const getUsers = async (req, res) => {
 
 //Get One
 export const getUser = async (req, res) => {
-  const { id } = req.params;
-
   try {
+    const { id } = req.params;
     const user = await Usuario.findOne({ _id: id });
     console.log(`User-> ${user}`);
 
@@ -159,22 +158,43 @@ export const getUser = async (req, res) => {
   }
 };
 
-// // Delete
-// export const deleteUser = async (req, res) => {
-//   const { id } = req.params;
+// Delete
+export const deleteUser = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const token = req.headers.authorization;
 
-//   if (!mongoose.Types.ObjectId.isValid(id)) {
-//     return res.status(400).json({ erro: "Nenhum usuário encontrado!" });
-//   }
+    console.log(`Id -> ${id} | Token -> ${token}`);
 
-//   const usuario = await Usuario.findOneAndDelete({ _id: id });
+    if (!token) {
+      return res.status(401).json({ message: "Token não informado!" });
+    }
 
-//   if (!usuario) {
-//     return res.status(400).json({ erro: "Nenhum usuário encontrado!" });
-//   }
+    const existingToken = await InvalidToken.findOne({ token });
 
-//   res.status(200).json({ msg: "Usuário deletado com sucesso" });
-// };
+    if (existingToken) {
+      return res.status(401).json({ message: "Token inválido" });
+    }
+
+    const user = await Usuario.findOne({ _id: id });
+    console.log(`User-> ${user}`);
+
+    if (!user) {
+      return res.status(404).json({ message: "Usuário não encontrado" });
+    }
+
+    await InvalidToken.create({
+      token,
+      expirationDate: new Date(Date.now() + 24 * 60 * 60 * 1000),
+    });
+
+    await Usuario.findByIdAndRemove({ _id: id });
+
+    res.status(200).json({ message: "Usuário deletado com sucesso" });
+  } catch (erro) {
+    return res.status(500).json({ message: "Erro no servidor!" });
+  }
+};
 
 //Update;
 export const updateUser = async (req, res) => {

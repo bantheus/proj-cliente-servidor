@@ -140,13 +140,21 @@ export default function Navbar() {
         >
           <div className="flex flex-col items-center space-y-1 px-2 pb-3 pt-2">
             {user ? (
-              <Link
-                href="/"
-                className="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
-                onClick={handleClick}
-              >
-                Logout
-              </Link>
+              <>
+                <Link
+                  href="/ocorrencias"
+                  className="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+                >
+                  Minhas Ocorrências
+                </Link>
+                <Link
+                  href="/"
+                  className="block rounded-md px-3 py-2 text-base font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+                  onClick={handleClick}
+                >
+                  Logout
+                </Link>
+              </>
             ) : (
               <>
                 <Link

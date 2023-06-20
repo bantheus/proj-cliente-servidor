@@ -5,17 +5,24 @@ import { useEffect, useState } from "react";
 import { useAuthContext } from "@/hooks/useAuthContext";
 import { format } from "date-fns";
 import ReactPaginate from "react-paginate";
+import { AiOutlineEdit } from "react-icons/ai";
+import { BsTrash } from "react-icons/bs";
+import { useDeleteOccurrence } from "@/hooks/useDeleteOccurrence";
 
 export default function HomePage() {
   const [occurrences, setOccurrences] = useState([]);
   const [pageNumber, setPageNumber] = useState(0);
   const { user } = useAuthContext();
+  const { deleteOccurrence } = useDeleteOccurrence();
   const occurrencesPerPage = 6;
   const pagesVisited = pageNumber * occurrencesPerPage;
+  const [occurrenceIdToDelete, setOccurrenceIdToDelete] = useState(null);
+
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
 
   useEffect(() => {
-    if(occurrences.length == 0){
-      console.log(occurrences)
+    if (occurrences.length == 0) {
+      console.log(occurrences);
       const fetchOccurrences = async () => {
         const response = await fetch(`${baseUrl}/occurrences`);
         const json = await response.json();
@@ -27,7 +34,6 @@ export default function HomePage() {
       };
       fetchOccurrences();
     }
-
   }, [occurrences]);
 
   const formatDateTime = (dateTime) => {
@@ -38,6 +44,21 @@ export default function HomePage() {
 
   const changePage = ({ selected }) => {
     setPageNumber(selected);
+  };
+
+  const handleDelete = async (e, occurrenceId) => {
+    e.preventDefault();
+    setOccurrenceIdToDelete(occurrenceId);
+    setShowDeleteConfirmation(true);
+  };
+
+  const confirmDelete = async () => {
+    await deleteOccurrence(occurrenceIdToDelete);
+    setShowDeleteConfirmation(false);
+  };
+
+  const cancelDelete = () => {
+    setShowDeleteConfirmation(false);
   };
 
   const renderOccurrencesTable = () => {
@@ -59,6 +80,9 @@ export default function HomePage() {
               <th className="px-6 py-3 text-left text-lg font-semibold">
                 Criado por
               </th>
+              <th className="px-6 py-3 text-left text-lg font-semibold">
+                Opções
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -76,10 +100,52 @@ export default function HomePage() {
                   <td className="px-6 py-4">{occurrence.local}</td>
                   <td className="px-6 py-4">{occurrence.km}</td>
                   <td className="px-6 py-4">{occurrence.user_id}</td>
+                  <td className="px-6 py-4">
+                    <div className="flex gap-4">
+                      <a href="#">
+                        {" "}
+                        <AiOutlineEdit
+                          onClick={(e) => handleDelete(e, occurrence.id)}
+                        />
+                      </a>
+                      <a href="#">
+                        {" "}
+                        <BsTrash
+                          onClick={(e) => handleDelete(e, occurrence.id)}
+                        />
+                      </a>
+                    </div>
+                  </td>
                 </tr>
               ))}
           </tbody>
         </table>
+        {showDeleteConfirmation && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75">
+            <div className="rounded-md bg-white p-8">
+              <h2 className="mb-4 text-lg font-semibold text-black">
+                Confirmar exclusão
+              </h2>
+              <p className="text-black">
+                Tem certeza que deseja excluir a ocorrência?
+              </p>
+              <div className="mt-4 flex justify-end">
+                <button
+                  className="mr-2 rounded-md bg-red-500 px-4 py-2 text-white"
+                  onClick={confirmDelete}
+                >
+                  Concordo
+                </button>
+                <button
+                  className="rounded-md bg-gray-300 px-4 py-2 text-gray-800"
+                  onClick={cancelDelete}
+                >
+                  Voltar
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     );
   };
@@ -105,8 +171,41 @@ export default function HomePage() {
               <p className="text-sm">Local: {occurrence.local}</p>
               <p className="text-sm">KM: {occurrence.km}</p>
               <p className="text-sm">Criado por: {occurrence.user_id}</p>
+              <p className="mt-2 flex gap-4 text-sm">
+                <AiOutlineEdit />
+                <a href="#">
+                  {" "}
+                  <BsTrash onClick={(e) => handleDelete(e, occurrence.id)} />
+                </a>
+              </p>
             </div>
           ))}
+        {showDeleteConfirmation && (
+          <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75">
+            <div className="rounded-md bg-white p-8">
+              <h2 className="mb-4 text-lg font-semibold text-black">
+                Confirmar exclusão
+              </h2>
+              <p className="text-black">
+                Tem certeza que deseja excluir a ocorrência?
+              </p>
+              <div className="mt-4 flex justify-end">
+                <button
+                  className="mr-2 rounded-md bg-red-500 px-4 py-2 text-white"
+                  onClick={confirmDelete}
+                >
+                  Concordo
+                </button>
+                <button
+                  className="rounded-md bg-gray-300 px-4 py-2 text-gray-800"
+                  onClick={cancelDelete}
+                >
+                  Voltar
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     );
   };
@@ -150,7 +249,7 @@ export default function HomePage() {
 
         <div className="mt-4 w-full pl-0 md:mt-0 md:w-1/4 md:pl-4">
           {user ? (
-            <OccurrenceForm  setOccurrence={setOccurrences}/>
+            <OccurrenceForm setOccurrence={setOccurrences} />
           ) : (
             <div className="rounded-lg bg-gray-800 p-4">
               <p className="text-white">

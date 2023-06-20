@@ -1,6 +1,10 @@
 import Occurrence from "../models/Occurrence.js";
 import InvalidToken from "../models/invalidToken.js";
 import Usuario from "../models/User.js";
+import jwt from "jsonwebtoken";
+import * as dotenv from "dotenv";
+
+dotenv.config();
 
 export const getOccurrences = async (req, res) => {
   try {
@@ -141,6 +145,52 @@ export const createOccurrence = async (req, res) => {
     });
   } catch (erro) {
     console.error(erro.message);
+    return res.status(500).json({ message: "Erro no servidor!" });
+  }
+};
+
+//Delete
+export const deleteOccurrence = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const token = req.headers.authorization;
+
+    const splitToken = token.split("Bearer ")[1];
+
+    console.log(`Id -> ${id} | Token -> ${token}`);
+
+    if (!token) {
+      return res.status(401).json({ message: "Token não informado!" });
+    }
+
+    const existingToken = await InvalidToken.findOne({ token });
+
+    if (existingToken) {
+      return res.status(401).json({ message: "Token inválido" });
+    }
+
+    const occurrence = await Occurrence.findOne({ _id: id });
+    console.log(`Ocorrencia -> ${occurrence}`);
+
+    if (!occurrence) {
+      return res.status(404).json({ message: "Ocorrência não encontrada" });
+    }
+
+    const decodedToken = jwt.verify(splitToken, process.env.SECRET);
+    const tokenId = decodedToken._id;
+
+    console.log(`TokenId -> ${tokenId}`);
+
+    if (tokenId != occurrence.user_id) {
+      return res.status(401).json({
+        message: "Ocorrencia não pode ser deletada por esse usuário!",
+      });
+    }
+
+    await Occurrence.findByIdAndRemove({ _id: id });
+
+    res.status(200).json({ message: "Ocorrência deletada com sucesso" });
+  } catch (erro) {
     return res.status(500).json({ message: "Erro no servidor!" });
   }
 };

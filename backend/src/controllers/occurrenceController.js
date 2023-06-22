@@ -194,3 +194,84 @@ export const deleteOccurrence = async (req, res) => {
     return res.status(500).json({ message: "Erro no servidor!" });
   }
 };
+
+//Update
+export const updateOccurrence = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const token = req.headers.authorization;
+
+    const splitToken = token.split("Bearer ")[1];
+    const { registered_at, local, occurrence_type, km, user_id } = req.body;
+
+    console.log(`Ocorrencia ID -> ${id} | Token -> ${token}`);
+
+    if (!token) {
+      return res.status(401).json({ message: "Token não informado!" });
+    }
+
+    const existingToken = await InvalidToken.findOne({ token });
+
+    if (existingToken) {
+      return res.status(401).json({ message: "Token inválido" });
+    }
+
+    const user = await Usuario.findOne({ _id: user_id });
+    console.log(`User-> ${user}`);
+
+    if (!user) {
+      return res.status(404).json({ message: "Usuário não encontrado" });
+    }
+
+    const occurrence = await Occurrence.findOne({ _id: id });
+    console.log(`Ocorrencia -> ${occurrence}`);
+
+    if (!occurrence) {
+      return res.status(404).json({ message: "Ocorrência não encontrada" });
+    }
+
+    if (!registered_at || !local || !occurrence_type || !km || !user_id) {
+      return res
+        .status(400)
+        .json({ message: "Todos os campos devem ser preenchidos!" });
+    }
+
+    const currentDate = new Date();
+    const occurrenceDate = new Date(registered_at);
+
+    if (occurrenceDate > currentDate) {
+      return res.status(400).json({
+        message: "A data de ocorrência não pode ser superior à data atual!",
+      });
+    }
+
+    if (user._id != occurrence.user_id) {
+      return res.status(401).json({
+        message: "Ocorrencia não pode ser alterada por esse usuário!",
+      });
+    }
+
+    const updatedData = {
+      registered_at,
+      local,
+      occurrence_type,
+      km,
+      token,
+      user_id,
+    };
+
+    await Occurrence.findByIdAndUpdate({ _id: id }, updatedData);
+
+    return res.status(201).json({
+      id: occurrence._id,
+      registered_at: occurrence.registered_at,
+      local: occurrence.local,
+      occurrence_type: occurrence.occurrence_type,
+      km: occurrence.km,
+      token: token,
+      user_id: occurrence.user_id,
+    });
+  } catch (erro) {
+    return res.status(500).json({ message: "Erro no servidor!" });
+  }
+};

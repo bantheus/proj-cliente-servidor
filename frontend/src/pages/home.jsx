@@ -8,6 +8,7 @@ import ReactPaginate from "react-paginate";
 import { AiOutlineEdit } from "react-icons/ai";
 import { BsTrash } from "react-icons/bs";
 import { useDeleteOccurrence } from "@/hooks/useDeleteOccurrence";
+import Link from "next/link";
 
 export default function HomePage() {
   const [occurrences, setOccurrences] = useState([]);
@@ -102,12 +103,12 @@ export default function HomePage() {
                   <td className="px-6 py-4">{occurrence.user_id}</td>
                   <td className="px-6 py-4">
                     <div className="flex gap-4">
-                      <a href="#">
-                        {" "}
-                        <AiOutlineEdit
-                          onClick={(e) => handleDelete(e, occurrence.id)}
-                        />
-                      </a>
+                      <Link
+                        href={`/ocorrenciaUpdate?id=${occurrence.id}`}
+                        className="text-2xl font-bold text-white"
+                      >
+                        <AiOutlineEdit />
+                      </Link>
                       <a href="#">
                         {" "}
                         <BsTrash

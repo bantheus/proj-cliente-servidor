@@ -8,7 +8,7 @@ dotenv.config();
 
 export const getOccurrences = async (req, res) => {
   try {
-    const data = await Occurrence.find({}).populate("user_id", "name");
+    const data = await Occurrence.find({});
     if (data.length > 0) {
       const occurrences = data.map((occurrence) => ({
         id: occurrence._id,
@@ -17,7 +17,7 @@ export const getOccurrences = async (req, res) => {
         occurrence_type: occurrence.occurrence_type,
         km: occurrence.km,
         token: occurrence.token,
-        user_id: occurrence.user_id.name,
+        user_id: occurrence.user_id,
       }));
       res.status(200).json(occurrences);
     } else {
@@ -54,10 +54,7 @@ export const getOcurrencesByUser = async (req, res) => {
       return res.status(404).json({ message: "Usuário não encontrado" });
     }
 
-    const data = await Occurrence.find()
-      .where("user_id")
-      .equals({ _id: id })
-      .populate("user_id", "name");
+    const data = await Occurrence.find().where("user_id").equals({ _id: id });
 
     if (data.length > 0) {
       const occurrences = data.map((occurrence) => ({
@@ -67,7 +64,7 @@ export const getOcurrencesByUser = async (req, res) => {
         occurrence_type: occurrence.occurrence_type,
         km: occurrence.km,
         token: occurrence.token,
-        user_id: occurrence.user_id.name,
+        user_id: occurrence.user_id,
       }));
       res.status(200).json(occurrences);
     } else {
@@ -201,7 +198,6 @@ export const updateOccurrence = async (req, res) => {
     const id = req.params.id;
     const token = req.headers.authorization;
 
-    const splitToken = token.split("Bearer ")[1];
     const { registered_at, local, occurrence_type, km, user_id } = req.body;
 
     console.log(`Ocorrencia ID -> ${id} | Token -> ${token}`);

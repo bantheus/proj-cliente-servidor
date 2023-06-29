@@ -102,7 +102,7 @@ export default function HomePage() {
                   <td className="px-6 py-4">{occurrence.km}</td>
                   <td className="px-6 py-4">{occurrence.user_id}</td>
                   <td className="px-6 py-4">
-                    <div className="flex gap-4">
+                    <div className="flex items-center gap-4">
                       <Link
                         href={`/ocorrenciaUpdate?id=${occurrence.id}`}
                         className="text-2xl font-bold text-white"

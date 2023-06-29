@@ -31,17 +31,21 @@ export default function UserPage() {
   const handleDelete = async (e) => {
     e.preventDefault();
 
-    setShowDeleteConfirmation(true);
+    const op = window.confirm("Deletar?");
+
+    if (op) {
+      await deleteUser();
+    }
   };
 
-  const confirmDelete = async () => {
-    await deleteUser();
-    setShowDeleteConfirmation(false);
-  };
+  // const confirmDelete = async () => {
+  //   await deleteUser();
+  //   setShowDeleteConfirmation(false);
+  // };
 
-  const cancelDelete = () => {
-    setShowDeleteConfirmation(false);
-  };
+  // const cancelDelete = () => {
+  //   setShowDeleteConfirmation(false);
+  // };
 
   return (
     <>
@@ -121,7 +125,7 @@ export default function UserPage() {
             </div>
           </form>
 
-          {showDeleteConfirmation && (
+          {/* {showDeleteConfirmation && (
             <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-75">
               <div className="rounded-md bg-white p-8">
                 <h2 className="mb-4 text-lg font-semibold">
@@ -144,7 +148,7 @@ export default function UserPage() {
                 </div>
               </div>
             </div>
-          )}
+          )} */}
         </div>
       </div>
     </>

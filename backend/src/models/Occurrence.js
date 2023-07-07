@@ -1,41 +1,44 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose from "mongoose";
 import Counter from "./Counter.js";
 
-const occurrenceSchema = new mongoose.Schema({
-  _id: {
-    type: Number,
-    unique: true,
+const occurrenceSchema = new mongoose.Schema(
+  {
+    _id: {
+      type: Number,
+      unique: true,
+    },
+    registered_at: {
+      type: String,
+      required: true,
+    },
+    local: {
+      type: String,
+      required: true,
+      minlength: 1,
+      maxlength: 125,
+    },
+    occurrence_type: {
+      type: Number,
+      required: true,
+      minlength: 1,
+    },
+    km: {
+      type: Number,
+      required: true,
+      minlength: 1,
+      maxlength: 9999,
+    },
+    token: {
+      type: String,
+    },
+    user_id: {
+      type: Number,
+      ref: "Usuario",
+      required: true,
+    },
   },
-  registered_at: {
-    type: String,
-    required: true,
-  },
-  local: {
-    type: String,
-    required: true,
-    minlength: 1,
-    maxlength: 125,
-  },
-  occurrence_type: {
-    type: Number,
-    required: true,
-    minlength: 1,
-  },
-  km: {
-    type: Number,
-    required: true,
-    minlength: 1,
-    maxlength: 9999,
-  },
-  token: {
-    type: String,
-  },
-  user_id: {
-    type: Number,
-    ref: "Usuario",
-    required: true,
-  },
-});
+  { versionKey: false }
+);
 
 occurrenceSchema.pre("save", async function (next) {
   if (!this.isNew) {

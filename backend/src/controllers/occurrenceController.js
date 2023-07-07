@@ -21,9 +21,7 @@ export const getOccurrences = async (req, res) => {
       }));
       res.status(200).json(occurrences);
     } else {
-      res
-        .status(200)
-        .json({ message: "Nenhuma ocorrência encontrada", occurrences: [] });
+      res.status(200).json([]);
     }
   } catch (error) {
     res.status(500).json({ message: "Erro no servidor" });
@@ -68,9 +66,7 @@ export const getOcurrencesByUser = async (req, res) => {
       }));
       res.status(200).json(occurrences);
     } else {
-      res
-        .status(200)
-        .json({ message: "Nenhuma ocorrência encontrada", occurrences: [] });
+      res.status(200).json([]);
     }
   } catch (error) {
     res.status(500).json({ message: "Erro no servidor" });
@@ -138,7 +134,6 @@ export const createOccurrence = async (req, res) => {
       occurrence_type: occurrence.occurrence_type,
       km: occurrence.km,
       token: token,
-      user_id: occurrence.user_id,
     });
   } catch (erro) {
     console.error(erro.message);

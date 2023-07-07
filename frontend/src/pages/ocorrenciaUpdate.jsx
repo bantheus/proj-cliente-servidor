@@ -28,8 +28,13 @@ export default function OccurrenceUpdate() {
     console.log(id);
     console.log(idUser);
 
+    const inputDate = new Date(registeredAt);
+    const adjustedDate = new Date(
+      inputDate.getTime() - inputDate.getTimezoneOffset() * 60000
+    );
+
     const occurrence = {
-      registered_at: registeredAt,
+      registered_at: adjustedDate.toISOString(),
       local: local,
       occurrence_type: Number(occurrenceType),
       km: Number(km),

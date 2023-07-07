@@ -37,10 +37,6 @@ export default function HomePage() {
     }
   }, [occurrences]);
 
-  const formatDateTime = (dateTime) => {
-    return format(new Date(dateTime), "dd-MM-yyyy HH:mm:ss");
-  };
-
   const pageCount = Math.ceil(occurrences?.length / occurrencesPerPage);
 
   const changePage = ({ selected }) => {
@@ -95,9 +91,7 @@ export default function HomePage() {
                   className={index % 2 === 0 ? "bg-gray-700" : "bg-gray-600"}
                 >
                   <td className="px-6 py-4">{occurrence.occurrence_type}</td>
-                  <td className="px-6 py-4">
-                    {formatDateTime(occurrence.registered_at)}
-                  </td>
+                  <td className="px-6 py-4">{occurrence.registered_at}</td>
                   <td className="px-6 py-4">{occurrence.local}</td>
                   <td className="px-6 py-4">{occurrence.km}</td>
                   <td className="px-6 py-4">{occurrence.user_id}</td>
@@ -167,7 +161,7 @@ export default function HomePage() {
                 Tipo de Ocorrência: {occurrence.occurrence_type}
               </p>
               <p className="text-sm">
-                Data da Ocorrência: {formatDateTime(occurrence.registered_at)}
+                Data da Ocorrência: {occurrence.registered_at}
               </p>
               <p className="text-sm">Local: {occurrence.local}</p>
               <p className="text-sm">KM: {occurrence.km}</p>
